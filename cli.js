@@ -16,6 +16,11 @@ const yargs = require('yargs')
 const options = yargs.argv
 
 // eslint-disable-next-line no-unused-vars
-publish(options, options._).then(published => {
-  // derp
-})
+publish(options, options._)
+  .then(context => {
+    console.warn(`published! ${JSON.stringify(context, null, 2)}`)
+  })
+  .catch(error => {
+    console.error(error)
+    process.exitCode = 1
+  })
