@@ -96,8 +96,9 @@ describe('publish()', () => {
     })
     const version = '1.1.0'
     return publish().then(() => {
-      expect(execa).toHaveBeenCalledTimes(1)
-      expect(execa).toHaveBeenCalledWith('npm', ['publish', '--tag', 'latest', '--access', 'public'], execOpts)
+      expect(execa).toHaveBeenCalledTimes(2)
+      expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['view', 'pkg@1.1.0', 'version'], {stderr: 'inherit'})
+      expect(execa).toHaveBeenNthCalledWith(2, 'npm', ['publish', '--tag', 'latest', '--access', 'public'], execOpts)
     })
   })
 

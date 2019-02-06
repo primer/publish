@@ -8,40 +8,46 @@ module.exports = function publish(options = {}, npmArgs = []) {
   }
 
   const context = getContext(options)
-  const {name, version, tag} = context
-  // const {message = DEFAULT_MESSAGE} = options
-  // const filesToCommit = 'package*.json'
+  const {name, version, tag, packageJson} = context
 
   const run = options.dryRun ? runDry : require('execa')
   const execOpts = {stdio: 'inherit'}
 
-  // TODO: confirm that the version isn't published
-  return (
-    Promise.resolve()
-      .then(() =>
-        publishStatus({
+  return Promise.resolve()
+    .then(() => {
+      if (packageJson.version === version) {
+        console.warn(`[publish] skipping "npm version" because "${version}" matches package.json`)
+        return ensureUnpublished()
+      } else {
+        return publishStatus({
           state: 'pending',
           description: `npm version ${version}`
-        })
-      )
-      .then(() => run('npm', [...npmArgs, 'version', version], execOpts))
-      // .then(() => run('git', ['commit', '-m', interpolate(message, context), filesToCommit], execOpts))
-      .then(() =>
-        publishStatus({
-          state: 'pending',
-          description: `npm publish --tag ${tag}`
-        })
-      )
-      .then(() => run('npm', [...npmArgs, 'publish', '--tag', tag, '--access', 'public'], execOpts))
-      .then(() =>
-        publishStatus({
-          state: 'success',
-          description: version,
-          url: `https://unpkg.com/${name}@${version}/`
-        })
-      )
-      .then(() => context)
-  )
+        }).then(() => run('npm', [...npmArgs, 'version', version], execOpts))
+      }
+    })
+    .then(() =>
+      publishStatus({
+        state: 'pending',
+        description: `npm publish --tag ${tag}`
+      })
+    )
+    .then(() => run('npm', [...npmArgs, 'publish', '--tag', tag, '--access', 'public'], execOpts))
+    .then(() =>
+      publishStatus({
+        state: 'success',
+        description: version,
+        url: `https://unpkg.com/${name}@${version}/`
+      })
+    )
+    .then(() => context)
+
+  function ensureUnpublished() {
+    return run('npm', ['view', `${name}@${version}`, 'version'], {stderr: 'inherit'}).then(({stdout}) => {
+      if (stdout === version) {
+        throw new Error(`${name}@${version} is already published!`)
+      }
+    })
+  }
 
   function publishStatus(props = {}) {
     return actionStatus(
