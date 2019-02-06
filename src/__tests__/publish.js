@@ -48,12 +48,12 @@ describe('publish()', () => {
     return publish().then(() => {
       expect(execa).toHaveBeenCalledTimes(3)
       expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version], execOpts)
-      expect(execa).toHaveBeenNthCalledWith(2, 'git', [
-        'commit',
-        '-m',
-        `chore: npm version ${version}`,
-        'package*.json'
-      ], execOpts)
+      expect(execa).toHaveBeenNthCalledWith(
+        2,
+        'git',
+        ['commit', '-m', `chore: npm version ${version}`, 'package*.json'],
+        execOpts
+      )
       expect(execa).toHaveBeenNthCalledWith(3, 'npm', ['publish', '--tag', 'canary', '--access', 'public'], execOpts)
     })
   })
@@ -71,12 +71,12 @@ describe('publish()', () => {
     return publish().then(() => {
       expect(execa).toHaveBeenCalledTimes(3)
       expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version], execOpts)
-      expect(execa).toHaveBeenNthCalledWith(2, 'git', [
-        'commit',
-        '-m',
-        `chore: npm version ${version}`,
-        'package*.json'
-      ], execOpts)
+      expect(execa).toHaveBeenNthCalledWith(
+        2,
+        'git',
+        ['commit', '-m', `chore: npm version ${version}`, 'package*.json'],
+        execOpts
+      )
       expect(execa).toHaveBeenNthCalledWith(3, 'npm', ['publish', '--tag', 'next', '--access', 'public'], execOpts)
     })
   })
@@ -94,12 +94,12 @@ describe('publish()', () => {
     return publish().then(() => {
       expect(execa).toHaveBeenCalledTimes(3)
       expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version], execOpts)
-      expect(execa).toHaveBeenNthCalledWith(2, 'git', [
-        'commit',
-        '-m',
-        `chore: npm version ${version}`,
-        'package*.json'
-      ], execOpts)
+      expect(execa).toHaveBeenNthCalledWith(
+        2,
+        'git',
+        ['commit', '-m', `chore: npm version ${version}`, 'package*.json'],
+        execOpts
+      )
       expect(execa).toHaveBeenNthCalledWith(3, 'npm', ['publish', '--tag', 'latest', '--access', 'public'], execOpts)
     })
   })
