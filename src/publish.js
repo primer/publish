@@ -22,29 +22,32 @@ module.exports = function publish(options = {}, npmArgs = []) {
     .then(() => {
       if (isLatest) {
         console.warn(`[publish] skipping "npm version" because "${version}" matches package.json`)
-        return checkPublished().then(published => {
-          if (published) {
-            console.warn(`[publish] ${version} is already published; exiting with neutral status`)
-            // see: <https://developer.github.com/actions/creating-github-actions/accessing-the-runtime-environment/#exit-codes-and-statuses>
-            process.exit(78)
-          }
-        })
+        // this is a fairly reliable way to determine whether the package@version is published
+        return run('npm', ['view', `${name}@${version}`, 'version'], {stderr: 'inherit'})
+          .then(({stdout}) => stdout === version)
+          .then(published => {
+            if (published) {
+              console.warn(`[publish] ${version} is already published; exiting with neutral status`)
+              // see: <https://developer.github.com/actions/creating-github-actions/accessing-the-runtime-environment/#exit-codes-and-statuses>
+              process.exit(78)
+            }
+          })
       } else {
-        return publishStatus({
+        return publishStatus(context, {
           state: 'pending',
           description: `npm version ${version}`
         }).then(() => run('npm', [...npmArgs, 'version', version], execOpts))
       }
     })
     .then(() =>
-      publishStatus({
+      publishStatus(context, {
         state: 'pending',
         description: `npm publish --tag ${tag}`
       })
     )
     .then(() => run('npm', [...npmArgs, 'publish', '--tag', tag, '--access', 'public'], execOpts))
     .then(() =>
-      publishStatus({
+      publishStatus(context, {
         state: 'success',
         description: version,
         url: `https://unpkg.com/${name}@${version}/`
@@ -53,14 +56,14 @@ module.exports = function publish(options = {}, npmArgs = []) {
     .then(() => {
       if (isLatest) {
         const context = 'publish/git'
-        return publishStatus({
+        return publishStatus(context, {
           context,
           state: 'pending',
           description: `Running: git push --tags origin ${branch}`
         })
-          .then(() => run('git', ['push', '--tags', 'origin', branch], execOpts))
+          .then(() => run('git', ['push', '--tags', 'origin', `HEAD:${branch}`], execOpts))
           .then(() =>
-            publishStatus({
+            publishStatus(context, {
               context,
               state: 'success',
               description: `Pushed ${branch} to ${sha.substr(0, 7)}`
@@ -69,25 +72,19 @@ module.exports = function publish(options = {}, npmArgs = []) {
       }
     })
     .then(() => context)
+}
 
-  function checkPublished() {
-    return run('npm', ['view', `${name}@${version}`, 'version'], {stderr: 'inherit'}).then(({stdout}) => {
-      return stdout === version
-    })
-  }
-
-  function publishStatus(props = {}) {
-    return actionStatus(
-      Object.assign(
-        {
-          context: `publish ${name}`,
-          // note: these need to be empty so that action-status
-          // doesn't throw an error w/o "required" env vars
-          description: '',
-          url: ''
-        },
-        props
-      )
+function publishStatus(context, options = {}) {
+  return actionStatus(
+    Object.assign(
+      {
+        context: `publish ${context.name}`,
+        // note: these need to be empty so that action-status
+        // doesn't throw an error w/o "required" env vars
+        description: '',
+        url: ''
+      },
+      options
     )
-  }
+  )
 }
