@@ -50,13 +50,13 @@ module.exports = function publish(options = {}, npmArgs = []) {
     )
     .then(() => {
       if (isLatest) {
-        const context = 'git push'
+        const context = 'publish/git'
         return publishStatus({
           context,
           state: 'pending',
-          description: 'Pushing HEAD + tags...'
+          description: `git push --tags origin ${branch}`
         })
-          .then(() => run('git', ['push', '--tags', 'HEAD'], execOpts))
+          .then(() => run('git', ['push', '--tags', 'origin', branch], execOpts))
           .then(() =>
             publishStatus({
               context,
