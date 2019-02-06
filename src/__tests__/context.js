@@ -45,6 +45,23 @@ describe('getContext()', () => {
     })
   })
 
+  it('generates a pendingStatus for version mismatches on release branches', () => {
+    mockFiles({
+      'package.json': {name: 'foo', version: '0.4.2'}
+    })
+    mockEnv({
+      GITHUB_REF: 'refs/heads/release-1.0.0',
+      GITHUB_SHA: 'deadfad'
+    })
+    return getContext().then(context => {
+      expect(context.pendingStatus).toEqual({
+        context: 'npm version',
+        state: 'pending',
+        description: 'Please run `npm version 1.0.0` before merging',
+      })
+    })
+  })
+
   it('gets the version from package.json if the branch is "master"', () => {
     const version = '2.0.1'
     mockFiles({
