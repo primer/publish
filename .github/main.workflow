@@ -27,7 +27,6 @@ action "test" {
 action "publish" {
   needs = ["lint", "test"]
   uses = "./"
-  args = "--dry-run"
   secrets = [
     "GITHUB_TOKEN",
     "NPM_AUTH_TOKEN",
