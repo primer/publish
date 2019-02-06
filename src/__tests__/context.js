@@ -1,6 +1,7 @@
 const mockedEnv = require('mocked-env')
 const getContext = require('../get-context')
 const readJSON = require('../read-json')
+const {mockFiles} = require('./__utils')
 
 jest.mock('../read-json')
 
@@ -18,7 +19,7 @@ describe('getContext()', () => {
       GITHUB_SHA: '50faded'
     })
     const {version, tag} = getContext()
-    expect(version).toBe('0.0.0-sha.50faded')
+    expect(version).toBe('0.0.0-50faded')
     expect(tag).toBe('canary')
   })
 
@@ -28,14 +29,14 @@ describe('getContext()', () => {
       GITHUB_SHA: 'deadfad'
     })
     const {version, tag} = getContext()
-    expect(version).toBe('1.0.0-next.deadfad')
+    expect(version).toBe('1.0.0-rc.deadfad')
     expect(tag).toBe('next')
   })
 
   it('gets the version from package.json if the branch is "master"', () => {
     const version = '2.0.1'
     mockFiles({
-      'package.json': {version}
+      'package.json': {name: 'mooch', version}
     })
     mockEnv({GITHUB_REF: 'refs/heads/master'})
     const context = getContext()
@@ -45,13 +46,5 @@ describe('getContext()', () => {
 
   function mockEnv(env) {
     restoreEnv = mockedEnv(env)
-  }
-
-  function mockFiles(files) {
-    readJSON.mockImplementation(path => {
-      if (path in files) {
-        return files[path]
-      }
-    })
   }
 })

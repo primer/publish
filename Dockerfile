@@ -12,7 +12,8 @@ LABEL maintainer="GitHub Design Systems <design-systems@github.com>"
 RUN apt-get update && \
   apt-get install -y --no-install-recommends git
 
-COPY . /primer-publish
+WORKDIR /primer-publish
+COPY . .
 RUN npm install --production
 
 ENTRYPOINT ["/primer-publish/entrypoint.sh"]
