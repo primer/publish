@@ -6,6 +6,11 @@ This [GitHub Action][github actions] publishes to npm with the following convent
 1. If we're on a `release-<version>` branch, we publish a release candidate to the `next` npm dist-tag with the version in the form: `<version>-rc.<sha>`
 1. Otherwise, we publish a "canary" release, which has a version in the form: `0.0.0-<sha>`.
 
+Also:
+
+* If the version in `package.json` is already published, we exit with a `78` code, which is Actions-speak for "neutral".
+* On the `master` branch, we push the version commits back to GitHub via git.
+
 ## Status checks
 Two [status checks] will be listed for this action in your checks: **publish** is the action's check, and **publish <package-name>** is a [commit status] created by the action that reports the URL and links to `unpkg.com` via "Details":
 
