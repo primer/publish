@@ -44,7 +44,7 @@ describe('publish()', () => {
     mockFiles({
       'package.json': {name: 'pkg', version: '1.0.0'}
     })
-    const version = '0.0.0-sha.deadfad'
+    const version = '0.0.0-deadfad'
     return publish().then(() => {
       expect(execa).toHaveBeenCalledTimes(2)
       expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version], execOpts)
@@ -69,7 +69,7 @@ describe('publish()', () => {
     mockFiles({
       'package.json': {name: 'pkg', version: '1.0.0'}
     })
-    const version = '2.0.0-next.deadfad'
+    const version = '2.0.0-rc.deadfad'
     return publish().then(() => {
       expect(execa).toHaveBeenCalledTimes(2)
       expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version], execOpts)

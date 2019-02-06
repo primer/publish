@@ -19,7 +19,7 @@ describe('getContext()', () => {
       GITHUB_SHA: '50faded'
     })
     const {version, tag} = getContext()
-    expect(version).toBe('0.0.0-sha.50faded')
+    expect(version).toBe('0.0.0-50faded')
     expect(tag).toBe('canary')
   })
 
@@ -29,7 +29,7 @@ describe('getContext()', () => {
       GITHUB_SHA: 'deadfad'
     })
     const {version, tag} = getContext()
-    expect(version).toBe('1.0.0-next.deadfad')
+    expect(version).toBe('1.0.0-rc.deadfad')
     expect(tag).toBe('next')
   })
 
