@@ -1,3 +1,4 @@
+const meta = require('github-action-meta')
 const actionStatus = require('action-status')
 const getContext = require('./get-context')
 const runDry = require('./run-dry')
@@ -9,13 +10,15 @@ module.exports = function publish(options = {}, npmArgs = []) {
 
   const context = getContext(options)
   const {name, version, tag, packageJson} = context
+  const isLatest = packageJson.version === version
+  const {branch, sha} = meta.git
 
   const run = options.dryRun ? runDry : require('execa')
   const execOpts = {stdio: 'inherit'}
 
   return Promise.resolve()
     .then(() => {
-      if (packageJson.version === version) {
+      if (isLatest) {
         console.warn(`[publish] skipping "npm version" because "${version}" matches package.json`)
         return checkPublished().then(published => {
           if (published) {
@@ -45,6 +48,24 @@ module.exports = function publish(options = {}, npmArgs = []) {
         url: `https://unpkg.com/${name}@${version}/`
       })
     )
+    .then(() => {
+      if (isLatest) {
+        const context = 'git push'
+        return publishStatus({
+          context,
+          state: 'pending',
+          description: 'Pushing HEAD + tags...'
+        })
+          .then(() => run('git', ['push', '--tags', 'HEAD'], execOpts))
+          .then(() =>
+            publishStatus({
+              context,
+              state: 'success',
+              description: `Pushed ${branch} to ${sha.substr(0, 7)}`
+            })
+          )
+      }
+    })
     .then(() => context)
 
   function checkPublished() {
