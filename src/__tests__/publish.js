@@ -16,11 +16,14 @@ describe('publish()', () => {
 
   afterEach(() => {
     restoreEnv()
-    execa.mockReset()
-    readJSON.mockReset()
+    execa.mockClear()
+    readJSON.mockClear()
   })
 
   it('throws if NPM_AUTH_TOKEN is falsy', () => {
+    mockFiles({
+      'package.json': {name: 'pkg', version: '1.0.0'}
+    })
     mockEnv({NPM_AUTH_TOKEN: undefined})
     expect(() => publish()).toThrow()
     mockEnv({NPM_AUTH_TOKEN: ''})

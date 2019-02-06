@@ -36,7 +36,7 @@ describe('getContext()', () => {
   it('gets the version from package.json if the branch is "master"', () => {
     const version = '2.0.1'
     mockFiles({
-      'package.json': {version}
+      'package.json': {name: 'mooch', version}
     })
     mockEnv({GITHUB_REF: 'refs/heads/master'})
     const context = getContext()
