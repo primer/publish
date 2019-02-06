@@ -40,7 +40,8 @@ module.exports = function publish(options = {}, npmArgs = []) {
     .then(() => run('npm', [...npmArgs, 'publish', '--tag', tag, '--access', 'public'], execOpts))
     .then(() =>
       publishStatus({
-        state: 'success'
+        state: 'success',
+        url: `https://unpkg.com/${name}@${version}/`
       })
     )
     .then(() => context)
@@ -50,8 +51,9 @@ module.exports = function publish(options = {}, npmArgs = []) {
       Object.assign(
         {
           context: `publish ${name}`,
-          // note: this needs to be empty so that action-status
-          // doesn't throw an error w/o GITHUB_ACTION_TARGET_URL
+          // note: these need to be empty so that action-status
+          // doesn't throw an error w/o "required" env vars
+          description: '',
           url: ''
         },
         props
