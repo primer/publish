@@ -45,7 +45,7 @@ module.exports = function getContext(options) {
     } else {
       const v = CANARY_VERSION
       const preid = CANARY_PREID
-      version = `${v}-${preid}.${shortSha}`
+      version = preid ? `${v}-${preid}.${shortSha}` : `${v}-${shortSha}`
       tag = CANARY_TAG
     }
   }
