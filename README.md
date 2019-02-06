@@ -7,9 +7,9 @@ This [GitHub Action][github actions] publishes to npm with the following convent
 1. Otherwise, we publish a "canary" release, which has a version in the form: `0.0.0-<sha>`.
 
 ## Status checks
-Two [status checks] will be listed for this action in your checks: **publish** is the action's check, and **publish <package-name>** is a [commit status] created by the action that reports the URL and links to `unpkg.com` via "Details":
+Two [status checks] will be listed for this action in your checks: **publish** is the action's check, and **publish {package-name}** is a [commit status] created by the action that reports the version published and links to `unpkg.com` via "Details":
 
-**TODO**: add image
+![image](https://user-images.githubusercontent.com/113896/52375286-23368980-2a14-11e9-8974-062a3e45a846.png)
 
 ## Usage
 To use this action in your own workflow, add the following snippet to your `.github/main.workflow` file:
