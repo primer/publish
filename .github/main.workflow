@@ -25,7 +25,7 @@ action "test" {
 }
 
 action "publish" {
-  needs = "test"
+  needs = ["lint", "test"]
   uses = "./"
   args = "--dry-run"
   secrets = [
