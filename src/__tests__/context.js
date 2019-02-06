@@ -1,5 +1,5 @@
 const mockedEnv = require('mocked-env')
-const getContext = require('../get-context')
+const getContext = require('../context')
 const readJSON = require('../read-json')
 const {mockFiles} = require('./__utils')
 
@@ -18,9 +18,10 @@ describe('getContext()', () => {
       GITHUB_REF: 'refs/heads/feat-x',
       GITHUB_SHA: '50faded'
     })
-    const {version, tag} = getContext()
-    expect(version).toBe('0.0.0-50faded')
-    expect(tag).toBe('canary')
+    return getContext().then(context => {
+      expect(context.version).toBe('0.0.0-50faded')
+      expect(context.tag).toBe('canary')
+    })
   })
 
   it('gets the release candidate version if the branch matches /^release-/', () => {
@@ -28,9 +29,10 @@ describe('getContext()', () => {
       GITHUB_REF: 'refs/heads/release-1.0.0',
       GITHUB_SHA: 'deadfad'
     })
-    const {version, tag} = getContext()
-    expect(version).toBe('1.0.0-rc.deadfad')
-    expect(tag).toBe('next')
+    return getContext().then(context => {
+      expect(context.version).toBe('1.0.0-rc.deadfad')
+      expect(context.tag).toBe('next')
+    })
   })
 
   it('gets the version from package.json if the branch is "master"', () => {
@@ -39,9 +41,10 @@ describe('getContext()', () => {
       'package.json': {name: 'mooch', version}
     })
     mockEnv({GITHUB_REF: 'refs/heads/master'})
-    const context = getContext()
-    expect(context.version).toBe(version)
-    expect(context.tag).toBe('latest')
+    return getContext().then(context => {
+      expect(context.version).toBe(version)
+      expect(context.tag).toBe('latest')
+    })
   })
 
   function mockEnv(env) {

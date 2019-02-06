@@ -50,5 +50,5 @@ module.exports = function getContext(options) {
     }
   }
 
-  return {name, version, tag, config, packageJson}
+  return Promise.resolve({name, version, tag, config, packageJson})
 }
