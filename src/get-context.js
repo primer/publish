@@ -8,7 +8,7 @@ const RELEASE_CANDIDATE_PREID = 'rc'
 const RELEASE_CANDIDATE_TAG = 'next'
 
 const CANARY_VERSION = '0.0.0'
-const CANARY_PREID = 'sha'
+const CANARY_PREID = ''
 const CANARY_TAG = 'canary'
 
 // eslint-disable-next-line no-unused-vars
