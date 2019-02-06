@@ -15,6 +15,13 @@ const CANARY_TAG = 'canary'
 // eslint-disable-next-line no-unused-vars
 module.exports = function getContext(options) {
   const packageJson = readJSON('package.json') || {}
+  const {name} = packageJson
+  // basic sanity checks
+  if (packageJson.private === true) {
+    throw new Error(`"private" is true in package.json; bailing`)
+  } else if (!name) {
+    throw new Error(`package.json is missing a "name" field`)
+  }
   const config = packageJson[CONFIG_KEY] || {}
   const {releaseBranch = 'master', releaseTag = 'latest'} = config
 
@@ -40,5 +47,5 @@ module.exports = function getContext(options) {
     }
   }
 
-  return {version, tag, config, packageJson}
+  return {name, version, tag, config, packageJson}
 }
