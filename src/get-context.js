@@ -1,6 +1,5 @@
 const meta = require('github-action-meta')
 const readJSON = require('./read-json')
-// const semver = require('semver')
 
 const CONFIG_KEY = '@primer/publish'
 
