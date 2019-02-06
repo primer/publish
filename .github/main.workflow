@@ -13,16 +13,19 @@ action "install" {
 }
 
 action "lint" {
+  needs = "install"
   uses = "actions/npm@master"
   args = "run lint"
 }
 
 action "test" {
+  needs = "install"
   uses = "actions/npm@master"
   args = "test"
 }
 
 action "publish" {
+  needs = "test"
   uses = "./"
   args = "--dry-run"
   secrets = ["GITHUB_TOKEN"]
