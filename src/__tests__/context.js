@@ -1,6 +1,7 @@
 const mockedEnv = require('mocked-env')
 const getContext = require('../get-context')
 const readJSON = require('../read-json')
+const {mockFiles} = require('./__utils')
 
 jest.mock('../read-json')
 
@@ -45,13 +46,5 @@ describe('getContext()', () => {
 
   function mockEnv(env) {
     restoreEnv = mockedEnv(env)
-  }
-
-  function mockFiles(files) {
-    readJSON.mockImplementation(path => {
-      if (path in files) {
-        return files[path]
-      }
-    })
   }
 })
