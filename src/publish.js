@@ -1,8 +1,6 @@
 const actionStatus = require('action-status')
-// const interpolate = require('interpolate')
 const getContext = require('./get-context')
 const runDry = require('./run-dry')
-// const {DEFAULT_MESSAGE} = require('./constants')
 
 module.exports = function publish(options = {}, npmArgs = []) {
   if (!process.env.NPM_AUTH_TOKEN) {
