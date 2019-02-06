@@ -24,12 +24,6 @@ module.exports = function publish(options = {}, npmArgs = []) {
       })
     )
     .then(() => run('npm', [...npmArgs, 'version', version], execOpts))
-    .then(() =>
-      publishStatus({
-        state: 'pending',
-        description: `git commit -a ${filesToCommit}`
-      })
-    )
     .then(() => run('git', ['commit', '-m', interpolate(message, context), filesToCommit], execOpts))
     .then(() =>
       publishStatus({
@@ -41,6 +35,7 @@ module.exports = function publish(options = {}, npmArgs = []) {
     .then(() =>
       publishStatus({
         state: 'success',
+        description: version,
         url: `https://unpkg.com/${name}@${version}/`
       })
     )
