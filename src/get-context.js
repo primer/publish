@@ -5,7 +5,7 @@ const readJSON = require('./read-json')
 const CONFIG_KEY = '@primer/publish'
 
 const RELEASE_BRANCH_PATTERN = /^release-(.+)$/
-const RELEASE_CANDIDATE_PREID = 'next'
+const RELEASE_CANDIDATE_PREID = 'rc'
 const RELEASE_CANDIDATE_TAG = 'next'
 
 const CANARY_VERSION = '0.0.0'
