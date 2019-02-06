@@ -9,7 +9,7 @@ workflow "lint, test, publish" {
 
 action "install" {
   uses = "actions/npm@master"
-  args = "install"
+  args = "ci"
 }
 
 action "lint" {
