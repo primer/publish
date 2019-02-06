@@ -10,7 +10,7 @@ LABEL homepage="http://github.com/primer/actions/tree/master/deploy"
 LABEL maintainer="GitHub Design Systems <design-systems@github.com>"
 
 RUN apt-get update && \
-  apt-get install -y --no-install-recommends git
+  apt-get install -y --no-install-recommends git jq
 
 WORKDIR /primer-publish
 COPY . .
