@@ -6,7 +6,6 @@ const {mockFiles} = require('./__utils')
 jest.mock('../read-json')
 
 describe('getContext()', () => {
-
   const defaultPackageJson = {
     name: 'default-package',
     version: '0.0.1'
@@ -57,7 +56,7 @@ describe('getContext()', () => {
       expect(context.pendingStatus).toEqual({
         context: 'npm version',
         state: 'pending',
-        description: 'Please run `npm version 1.0.0` before merging',
+        description: 'Please run `npm version 1.0.0` before merging'
       })
     })
   })

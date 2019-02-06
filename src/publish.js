@@ -11,8 +11,6 @@ module.exports = function publish(options = {}, npmArgs = []) {
   const run = options.dryRun ? runDry : require('execa')
   const execOpts = {stdio: 'inherit'}
 
-  const context = getContext(options)
-
   return getContext(options).then(context => {
     const {name, version, tag, packageJson, pendingStatus} = context
     const {branch, sha} = meta.git
