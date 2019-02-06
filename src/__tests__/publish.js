@@ -1,9 +1,11 @@
+const actionStatus = require('action-status')
 const execa = require('execa')
 const mockedEnv = require('mocked-env')
 const publish = require('../publish')
 const readJSON = require('../read-json')
 const {mockFiles} = require('./__utils')
 
+jest.mock('action-status')
 jest.mock('execa')
 jest.mock('../read-json')
 
@@ -12,6 +14,7 @@ describe('publish()', () => {
 
   beforeEach(() => {
     execa.mockImplementation(() => Promise.resolve({stdout: '', stderr: ''}))
+    actionStatus.mockImplementation(() => Promise.resolve())
   })
 
   afterEach(() => {
