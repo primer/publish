@@ -18,8 +18,7 @@ module.exports = function publish(options = {}, npmArgs = []) {
     // this is true if we think we're publishing the version that's in git
     const isLatest = packageJson.version === version
 
-    const init = pendingStatus ? publishStatus(context, pendingStatus) : Promise.resolve()
-    return init
+    return (pendingStatus ? publishStatus(context, pendingStatus) : Promise.resolve())
       .then(() => {
         if (isLatest) {
           console.warn(`[publish] skipping "npm version" because "${version}" matches package.json`)

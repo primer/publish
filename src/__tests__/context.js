@@ -56,7 +56,7 @@ describe('getContext()', () => {
       expect(context.pendingStatus).toEqual({
         context: 'npm version',
         state: 'pending',
-        description: 'Please run `npm version 1.0.0` before merging'
+        description: `Remember to set "version": "1.0.0" in package.json`
       })
     })
   })

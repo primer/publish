@@ -42,7 +42,7 @@ module.exports = function getContext(options) {
         pendingStatus = {
           context: `npm version`,
           state: 'pending',
-          description: `Please run \`npm version ${v}\` before merging`
+          description: `Remember to set "version": "${v}" in package.json`
         }
       }
       const preid = RELEASE_CANDIDATE_PREID
