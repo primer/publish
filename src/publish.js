@@ -16,6 +16,8 @@ module.exports = function publish(options = {}, npmArgs = []) {
 
   const run = options.dryRun ? runDry : require('execa')
   const execOpts = {stdio: 'inherit'}
+
+  // TODO: confirm that the version isn't published
   return (
     Promise.resolve()
       .then(() =>

@@ -37,6 +37,8 @@ module.exports = function getContext(options) {
     let match
     const shortSha = sha.substr(0, 7)
     if ((match = branch.match(RELEASE_BRANCH_PATTERN))) {
+      // TODO: add a pending check status to update package.json
+      // if the version doesn't match!
       const v = match[1]
       const preid = RELEASE_CANDIDATE_PREID
       version = `${v}-${preid}.${shortSha}`
