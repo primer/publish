@@ -24,7 +24,7 @@ module.exports = function publish(options = {}, npmArgs = []) {
       })
     )
     .then(() => run('npm', [...npmArgs, 'version', version], execOpts))
-    .then(() => run('git', ['commit', '-m', interpolate(message, context), filesToCommit], execOpts))
+    // .then(() => run('git', ['commit', '-m', interpolate(message, context), filesToCommit], execOpts))
     .then(() =>
       publishStatus({
         state: 'pending',
