@@ -86,18 +86,18 @@ describe('publish()', () => {
   })
 
   it('does the right things on master', () => {
+    const version = '1.1.0'
     mockEnv({
       GITHUB_REF: 'refs/heads/master',
       GITHUB_SHA: 'deadfad',
       NPM_AUTH_TOKEN: 'secret'
     })
     mockFiles({
-      'package.json': {name: 'pkg', version: '1.1.0'}
+      'package.json': {name: 'pkg', version}
     })
-    const version = '1.1.0'
     return publish().then(() => {
       expect(execa).toHaveBeenCalledTimes(2)
-      expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['view', 'pkg@1.1.0', 'version'], {stderr: 'inherit'})
+      expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['view', `pkg@${version}`, 'version'], {stderr: 'inherit'})
       expect(execa).toHaveBeenNthCalledWith(2, 'npm', ['publish', '--tag', 'latest', '--access', 'public'], execOpts)
     })
   })
