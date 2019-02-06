@@ -26,13 +26,13 @@ action "publish" {
 
 **You will need to provide an npm access token with publish permissions via the `NPM_AUTH_TOKEN` secret in the Actions visual editor** if you haven't already.
 
-To avoid racking up failed deployments, we suggest that you place this action after any linting and test actions.
+To avoid racking up failed publish actions, we suggest that you place this action after any linting and test actions.
 
-## Now CLI arguments
-It's possible to pass additional arguments through to the `now` CLI via the `args` field in your workflow action. Because the `primer-publish` CLI accepts options of its own (such as `--dry-run`), you need to prefix any `npm` arguments with `--`:
+## npm CLI arguments
+It's possible to pass additional arguments to `npm` via the `args` field in your workflow action. Because the `primer-publish` CLI accepts options of its own (such as `--dry-run`), you need to prefix any `npm` arguments with `--`:
 
 ```diff
-action "deploy" {
+action "publish" {
   uses = "primer/publish@master"
 +  args = ["--", "--registry=https://registry.your.org"]
 ```
