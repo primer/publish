@@ -12,9 +12,10 @@ module.exports = function publish(options = {}, npmArgs = []) {
   const context = getContext(options)
   const {name, version, tag} = context
   const {message = DEFAULT_MESSAGE} = options
-  const files = 'package*.json'
+  const filesToCommit = 'package*.json'
 
   const run = options.dryRun ? runDry : require('execa')
+  const execOpts = {stdio: 'inherit'}
   return Promise.resolve()
     .then(() =>
       publishStatus({
@@ -22,21 +23,21 @@ module.exports = function publish(options = {}, npmArgs = []) {
         description: `npm version ${version}`
       })
     )
-    .then(() => run('npm', [...npmArgs, 'version', version]))
+    .then(() => run('npm', [...npmArgs, 'version', version], execOpts))
     .then(() =>
       publishStatus({
         state: 'pending',
-        description: `git commit -a ${files}`
+        description: `git commit -a ${filesToCommit}`
       })
     )
-    .then(() => run('git', ['commit', '-m', interpolate(message, context), files]))
+    .then(() => run('git', ['commit', '-m', interpolate(message, context), filesToCommit], execOpts))
     .then(() =>
       publishStatus({
         state: 'pending',
         description: `npm publish --tag ${tag}`
       })
     )
-    .then(() => run('npm', [...npmArgs, 'publish', '--tag', tag, '--access', 'public']))
+    .then(() => run('npm', [...npmArgs, 'publish', '--tag', tag, '--access', 'public'], execOpts))
     .then(() =>
       publishStatus({
         state: 'success'
@@ -48,7 +49,10 @@ module.exports = function publish(options = {}, npmArgs = []) {
     return actionStatus(
       Object.assign(
         {
-          context: `publish ${name}`
+          context: `publish ${name}`,
+          // note: this needs to be empty so that action-status
+          // doesn't throw an error w/o GITHUB_ACTION_TARGET_URL
+          url: ''
         },
         props
       )
