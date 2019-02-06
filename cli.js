@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-const publish = require('.')
+const publish = require('./src/publish')
+const {DEFAULT_MESSAGE} = require('./src/constants')
 
 const yargs = require('yargs')
   .option('dry-run', {
@@ -9,7 +10,7 @@ const yargs = require('yargs')
   .option('message', {
     describe: 'The git commit message (not pushed)',
     alias: 'm',
-    default: 'chore: npm version {version}'
+    default: DEFAULT_MESSAGE
   })
 
 const options = yargs.argv
