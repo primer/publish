@@ -27,6 +27,7 @@ module.exports = function getContext(options) {
   const {releaseBranch = 'master', releaseTag = 'latest'} = config
 
   let version
+  let pendingStatus
   let tag = releaseTag
 
   const {sha, branch} = meta.git
@@ -36,9 +37,14 @@ module.exports = function getContext(options) {
     let match
     const shortSha = sha.substr(0, 7)
     if ((match = branch.match(RELEASE_BRANCH_PATTERN))) {
-      // TODO: add a pending check status to update package.json
-      // if the version doesn't match!
       const v = match[1]
+      if (v !== version) {
+        pendingStatus = {
+          context: `npm version`,
+          state: 'pending',
+          description: `Please run \`npm version ${v}\` before merging`
+        }
+      }
       const preid = RELEASE_CANDIDATE_PREID
       version = `${v}-${preid}.${shortSha}`
       tag = RELEASE_CANDIDATE_TAG
@@ -50,5 +56,5 @@ module.exports = function getContext(options) {
     }
   }
 
-  return Promise.resolve({name, version, tag, config, packageJson})
+  return Promise.resolve({name, version, tag, config, packageJson, pendingStatus})
 }
