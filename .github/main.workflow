@@ -28,5 +28,8 @@ action "publish" {
   needs = "test"
   uses = "./"
   args = "--dry-run"
-  secrets = ["GITHUB_TOKEN"]
+  secrets = [
+    "GITHUB_TOKEN",
+    "NPM_AUTH_TOKEN",
+  ]
 }
