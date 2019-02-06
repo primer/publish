@@ -12,6 +12,8 @@ jest.mock('../read-json')
 describe('publish()', () => {
   let restoreEnv = () => {}
 
+  const execOpts = {stdio: 'inherit'}
+
   beforeEach(() => {
     execa.mockImplementation(() => Promise.resolve({stdout: '', stderr: ''}))
     actionStatus.mockImplementation(() => Promise.resolve())
@@ -45,14 +47,14 @@ describe('publish()', () => {
     const version = '0.0.0-sha.deadfad'
     return publish().then(() => {
       expect(execa).toHaveBeenCalledTimes(3)
-      expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version])
+      expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version], execOpts)
       expect(execa).toHaveBeenNthCalledWith(2, 'git', [
         'commit',
         '-m',
         `chore: npm version ${version}`,
         'package*.json'
-      ])
-      expect(execa).toHaveBeenNthCalledWith(3, 'npm', ['publish', '--tag', 'canary', '--access', 'public'])
+      ], execOpts)
+      expect(execa).toHaveBeenNthCalledWith(3, 'npm', ['publish', '--tag', 'canary', '--access', 'public'], execOpts)
     })
   })
 
@@ -68,14 +70,14 @@ describe('publish()', () => {
     const version = '2.0.0-next.deadfad'
     return publish().then(() => {
       expect(execa).toHaveBeenCalledTimes(3)
-      expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version])
+      expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version], execOpts)
       expect(execa).toHaveBeenNthCalledWith(2, 'git', [
         'commit',
         '-m',
         `chore: npm version ${version}`,
         'package*.json'
-      ])
-      expect(execa).toHaveBeenNthCalledWith(3, 'npm', ['publish', '--tag', 'next', '--access', 'public'])
+      ], execOpts)
+      expect(execa).toHaveBeenNthCalledWith(3, 'npm', ['publish', '--tag', 'next', '--access', 'public'], execOpts)
     })
   })
 
@@ -91,14 +93,14 @@ describe('publish()', () => {
     const version = '1.1.0'
     return publish().then(() => {
       expect(execa).toHaveBeenCalledTimes(3)
-      expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version])
+      expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version], execOpts)
       expect(execa).toHaveBeenNthCalledWith(2, 'git', [
         'commit',
         '-m',
         `chore: npm version ${version}`,
         'package*.json'
-      ])
-      expect(execa).toHaveBeenNthCalledWith(3, 'npm', ['publish', '--tag', 'latest', '--access', 'public'])
+      ], execOpts)
+      expect(execa).toHaveBeenNthCalledWith(3, 'npm', ['publish', '--tag', 'latest', '--access', 'public'], execOpts)
     })
   })
 
