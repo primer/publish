@@ -1,0 +1,34 @@
+{
+  "name": "@primer/publish",
+  "version": "0.1.0",
+  "description": "Publish Primer projects to npm with GitHub Design Systems conventions",
+  "keywords": [
+    "primer",
+    "publish",
+    "github-actions",
+    "npm"
+  ],
+  "author": "GitHub, Inc.",
+  "license": "MIT",
+  "main": "index.js",
+  "bin": {
+    "primer-publish": "cli.js"
+  },
+  "scripts": {
+    "lint": "eslint *.js src",
+    "test": "jest"
+  },
+  "dependencies": {
+    "github-action-meta": "^0.1.2",
+    "interpolate": "^0.1.0",
+    "semver": "^5.6.0",
+    "yargs": "^12.0.5"
+  },
+  "devDependencies": {
+    "eslint": "^5.13.0",
+    "eslint-plugin-github": "^1.8.1",
+    "jest": "^24.1.0",
+    "mocked-env": "^1.2.4",
+    "prettier": "^1.16.4"
+  }
+}
