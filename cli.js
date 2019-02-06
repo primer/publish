@@ -6,8 +6,14 @@ const yargs = require('yargs')
     describe: 'Print what will be done without doing it',
     type: 'boolean'
   })
+  .alias('help', 'h')
 
 const options = yargs.argv
+
+if (options.help) {
+  yargs.showHelp()
+  process.exit(0)
+}
 
 publish(options, options._)
   .then(context => {
