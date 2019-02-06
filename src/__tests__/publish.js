@@ -48,14 +48,6 @@ describe('publish()', () => {
     return publish().then(() => {
       expect(execa).toHaveBeenCalledTimes(2)
       expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version], execOpts)
-      /*
-      expect(execa).toHaveBeenNthCalledWith(
-        2,
-        'git',
-        ['commit', '-m', `chore: npm version ${version}`, 'package*.json'],
-        execOpts
-      )
-      */
       expect(execa).toHaveBeenNthCalledWith(2, 'npm', ['publish', '--tag', 'canary', '--access', 'public'], execOpts)
     })
   })
@@ -73,14 +65,6 @@ describe('publish()', () => {
     return publish().then(() => {
       expect(execa).toHaveBeenCalledTimes(2)
       expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version], execOpts)
-      /*
-      expect(execa).toHaveBeenNthCalledWith(
-        2,
-        'git',
-        ['commit', '-m', `chore: npm version ${version}`, 'package*.json'],
-        execOpts
-      )
-      */
       expect(execa).toHaveBeenNthCalledWith(2, 'npm', ['publish', '--tag', 'next', '--access', 'public'], execOpts)
     })
   })

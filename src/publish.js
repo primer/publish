@@ -8,13 +8,15 @@ module.exports = function publish(options = {}, npmArgs = []) {
     throw new Error(`You must set the NPM_AUTH_TOKEN environment variable`)
   }
 
-  const context = getContext(options)
-  const {name, version, tag, packageJson} = context
-  const isLatest = packageJson.version === version
-  const {branch, sha} = meta.git
-
   const run = options.dryRun ? runDry : require('execa')
   const execOpts = {stdio: 'inherit'}
+
+  const context = getContext(options)
+  const {name, version, tag, packageJson} = context
+  const {branch, sha} = meta.git
+
+  // this is true if we think we're publishing the version that's in git
+  const isLatest = packageJson.version === version
 
   return Promise.resolve()
     .then(() => {
@@ -54,7 +56,7 @@ module.exports = function publish(options = {}, npmArgs = []) {
         return publishStatus({
           context,
           state: 'pending',
-          description: `git push --tags origin ${branch}`
+          description: `Running: git push --tags origin ${branch}`
         })
           .then(() => run('git', ['push', '--tags', 'origin', branch], execOpts))
           .then(() =>
