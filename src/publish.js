@@ -17,7 +17,13 @@ module.exports = function publish(options = {}, npmArgs = []) {
     .then(() => {
       if (packageJson.version === version) {
         console.warn(`[publish] skipping "npm version" because "${version}" matches package.json`)
-        return ensureUnpublished()
+        return checkPublished().then(published => {
+          if (published) {
+            console.warn(`[publish] ${version} is already published; exiting with neutral status`)
+            // see: <https://developer.github.com/actions/creating-github-actions/accessing-the-runtime-environment/#exit-codes-and-statuses>
+            process.exit(78)
+          }
+        })
       } else {
         return publishStatus({
           state: 'pending',
@@ -41,11 +47,9 @@ module.exports = function publish(options = {}, npmArgs = []) {
     )
     .then(() => context)
 
-  function ensureUnpublished() {
+  function checkPublished() {
     return run('npm', ['view', `${name}@${version}`, 'version'], {stderr: 'inherit'}).then(({stdout}) => {
-      if (stdout === version) {
-        throw new Error(`${name}@${version} is already published!`)
-      }
+      return stdout === version
     })
   }
 
