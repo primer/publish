@@ -6,7 +6,17 @@ const {mockFiles} = require('./__utils')
 jest.mock('../read-json')
 
 describe('getContext()', () => {
+
+  const defaultPackageJson = {
+    name: 'default-package',
+    version: '0.0.1'
+  }
+
   let restoreEnv = () => {}
+
+  beforeEach(() => {
+    mockFiles({'package.json': defaultPackageJson})
+  })
 
   afterEach(() => {
     restoreEnv()

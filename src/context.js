@@ -15,14 +15,14 @@ const CANARY_TAG = 'canary'
 module.exports = function getContext(options) {
   const packageJson = readJSON('package.json') || {}
   const {name} = packageJson
+
   // basic sanity checks
-  /*
   if (packageJson.private === true) {
     throw new Error(`"private" is true in package.json; bailing`)
   } else if (!name) {
     throw new Error(`package.json is missing a "name" field`)
   }
-  */
+
   const config = packageJson[CONFIG_KEY] || {}
   const {releaseBranch = 'master', releaseTag = 'latest'} = config
 
