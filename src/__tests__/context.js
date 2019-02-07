@@ -22,6 +22,21 @@ describe('getContext()', () => {
     readJSON.mockReset()
   })
 
+  it('throws if it is unable to read package.json', () => {
+    mockFiles({})
+    expect(() => getContext()).toThrow()
+  })
+
+  it('throws if "private": true in package.json', () => {
+    mockFiles({'package.json': {'private': true}})
+    expect(() => getContext()).toThrow()
+  })
+
+  it('throws if there is no "name" field in package.json', () => {
+    mockFiles({'package.json': {'name': ''}})
+    expect(() => getContext()).toThrow()
+  })
+
   it('gets the canary version by default', () => {
     mockEnv({
       GITHUB_REF: 'refs/heads/feat-x',
