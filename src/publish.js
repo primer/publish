@@ -13,7 +13,7 @@ module.exports = function publish(options = {}, npmArgs = []) {
 
   return getContext(options).then(context => {
     const {name, version, tag, packageJson, pendingStatus} = context
-    const {branch, sha} = meta.git
+    const {sha} = meta.git
 
     // this is true if we think we're publishing the version that's in git
     const isLatest = packageJson.version === version
@@ -55,18 +55,20 @@ module.exports = function publish(options = {}, npmArgs = []) {
       )
       .then(() => {
         if (isLatest) {
-          const context = 'publish/git'
+          const context = 'git tag'
+          const tag = `v${version}`
           return publishStatus(context, {
             context,
             state: 'pending',
-            description: `Running: git push --tags origin ${branch}`
+            description: `Tagging the release as "${tag}"...`
           })
-            .then(() => run('git', ['push', '--tags', 'origin', `HEAD:${branch}`], execOpts))
+            .then(() => run('git', ['tag', tag], execOpts))
+            .then(() => run('git', ['push', '--tags', 'origin'], execOpts))
             .then(() =>
               publishStatus(context, {
                 context,
                 state: 'success',
-                description: `Pushed ${branch} to ${sha.substr(0, 7)}`
+                description: `Tagged ${sha.substr(0, 7)} as "${tag}"`
               })
             )
         }
