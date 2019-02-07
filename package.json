@@ -19,6 +19,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@octokit/rest": "^16.15.0",
     "action-status": "^0.1.1",
     "github-action-meta": "^0.1.2",
     "yargs": "^12.0.5"
