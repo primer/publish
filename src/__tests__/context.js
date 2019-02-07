@@ -28,12 +28,12 @@ describe('getContext()', () => {
   })
 
   it('throws if "private": true in package.json', () => {
-    mockFiles({'package.json': {'private': true}})
+    mockFiles({'package.json': {private: true}})
     expect(() => getContext()).toThrow()
   })
 
   it('throws if there is no "name" field in package.json', () => {
-    mockFiles({'package.json': {'name': ''}})
+    mockFiles({'package.json': {name: ''}})
     expect(() => getContext()).toThrow()
   })
 
