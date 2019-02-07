@@ -31,6 +31,8 @@ module.exports = function getContext(options) {
   let tag = releaseTag
 
   const {sha, branch} = meta.git
+  const repo = meta.repo.toString()
+
   if (branch === releaseBranch) {
     version = packageJson.version
   } else {
@@ -42,7 +44,8 @@ module.exports = function getContext(options) {
         pendingStatus = {
           context: `npm version`,
           state: 'pending',
-          description: `Remember to set "version": "${v}" in package.json`
+          description: `Remember to set "version": "${v}" in package.json`,
+          url: `https://github.com/${repo}/edit/${branch}/package.json`
         }
       }
       const preid = RELEASE_CANDIDATE_PREID
