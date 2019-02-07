@@ -3,13 +3,11 @@
 This [GitHub Action][github actions] publishes to npm with the following conventions:
 
 1. If we're on the `master` branch, the `version` field is used as-is and we just run `npm publish --access public`.
-1. If we're on a `release-<version>` branch, we publish a release candidate to the `next` npm dist-tag with the version in the form: `<version>-rc.<sha>`
+    * After publishing a new version on the `master` branch, we tag the commit SHA with `v{version}` via the GitHub API.
+    * If the version in `package.json` is already published, we exit with a `78` code, which is Actions-speak for "neutral".
+1. If we're on a `release-<version>` branch, we publish a release candidate to the `next` npm dist-tag with the version in the form: `<version>-rc.<sha>`.
+    * A [status check][status checks] is created with the context `npm version` noting whether the `version` field in `package.json` matches the `<version>` portion of the branch. If it doesn't, the check's status is marked as pending.
 1. Otherwise, we publish a "canary" release, which has a version in the form: `0.0.0-<sha>`.
-
-Also:
-
-* If the version in `package.json` is already published, we exit with a `78` code, which is Actions-speak for "neutral".
-* On the `master` branch, we push the version commits back to GitHub via git.
 
 ## Status checks
 Two [status checks] will be listed for this action in your checks: **publish** is the action's check, and **publish {package-name}** is a [commit status] created by the action that reports the version published and links to `unpkg.com` via "Details":
