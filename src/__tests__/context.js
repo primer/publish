@@ -59,7 +59,7 @@ describe('getContext()', () => {
     })
   })
 
-  it('generates a pendingStatus for version mismatches on release branches', () => {
+  it('generates a pending "npm version" status for release branches', () => {
     mockFiles({
       'package.json': {name: 'foo', version: '0.4.2'}
     })
@@ -69,11 +69,30 @@ describe('getContext()', () => {
       GITHUB_SHA: 'deadfad'
     })
     return getContext().then(context => {
-      expect(context.pendingStatus).toEqual({
+      expect(context.status).toEqual({
         context: 'npm version',
         state: 'pending',
         description: `Remember to set "version": "1.0.0" in package.json`,
         url: 'https://github.com/primer/foo/edit/release-1.0.0/package.json'
+      })
+    })
+  })
+
+  it('generates a success "npm version" status for release branches', () => {
+    mockFiles({
+      'package.json': {name: 'foo', version: '1.0.0'}
+    })
+    mockEnv({
+      GITHUB_REF: 'refs/heads/release-1.0.0',
+      GITHUB_REPOSITORY: 'primer/foo',
+      GITHUB_SHA: 'deadfad'
+    })
+    return getContext().then(context => {
+      expect(context.packageJson).toEqual({name: 'foo', version: '1.0.0'})
+      expect(context.status).toEqual({
+        context: 'npm version',
+        state: 'success',
+        description: '1.0.0'
       })
     })
   })
