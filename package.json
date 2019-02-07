@@ -1,6 +1,6 @@
 {
   "name": "@primer/publish",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Publish Primer projects to npm with GitHub Design Systems conventions",
   "keywords": [
     "primer",
@@ -19,6 +19,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@octokit/rest": "^16.15.0",
     "action-status": "^0.1.1",
     "github-action-meta": "^0.1.2",
     "yargs": "^12.0.5"
