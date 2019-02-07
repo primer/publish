@@ -85,7 +85,8 @@ module.exports = function publish(options = {}, npmArgs = []) {
               publishStatus(context, {
                 context: tagContext,
                 state: 'success',
-                description: `Tagged ${sha.substr(0, 7)} as "${tag}"`
+                description: `Tagged ${sha.substr(0, 7)} as "${tag}"`,
+                url: `https://github.com/${repo}/releases/new?tag=${tag}`
               })
             )
         }
