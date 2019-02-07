@@ -8,47 +8,64 @@ const RELEASE_CANDIDATE_PREID = 'rc'
 const RELEASE_CANDIDATE_TAG = 'next'
 
 const CANARY_VERSION = '0.0.0'
-const CANARY_PREID = ''
 const CANARY_TAG = 'canary'
 
 // eslint-disable-next-line no-unused-vars
 module.exports = function getContext(options) {
-  const packageJson = readJSON('package.json') || {}
+  const packageJson = readJSON('package.json')
+  if (!packageJson) {
+    throw new Error(`Unable to read package.json in ${process.cwd()}!`)
+  }
   const {name} = packageJson
+
   // basic sanity checks
-  /*
   if (packageJson.private === true) {
     throw new Error(`"private" is true in package.json; bailing`)
   } else if (!name) {
     throw new Error(`package.json is missing a "name" field`)
   }
-  */
+
   const config = packageJson[CONFIG_KEY] || {}
   const {releaseBranch = 'master', releaseTag = 'latest'} = config
 
   let version
+  let status
   let tag = releaseTag
 
   const {sha, branch} = meta.git
+  const repo = meta.repo.toString()
+
   if (branch === releaseBranch) {
     version = packageJson.version
   } else {
     let match
     const shortSha = sha.substr(0, 7)
     if ((match = branch.match(RELEASE_BRANCH_PATTERN))) {
-      // TODO: add a pending check status to update package.json
-      // if the version doesn't match!
       const v = match[1]
+      status = Object.assign(
+        {
+          context: `npm version`
+        },
+        v === packageJson.version
+          ? {
+              state: 'success',
+              description: v
+            }
+          : {
+              state: 'pending',
+              description: `Remember to set "version": "${v}" in package.json`,
+              url: `https://github.com/${repo}/edit/${branch}/package.json`
+            }
+      )
       const preid = RELEASE_CANDIDATE_PREID
       version = `${v}-${preid}.${shortSha}`
       tag = RELEASE_CANDIDATE_TAG
     } else {
       const v = CANARY_VERSION
-      const preid = CANARY_PREID
-      version = preid ? `${v}-${preid}.${shortSha}` : `${v}-${shortSha}`
+      version = `${v}-${shortSha}`
       tag = CANARY_TAG
     }
   }
 
-  return {name, version, tag, config, packageJson}
+  return Promise.resolve({name, version, tag, config, packageJson, status})
 }

@@ -80,10 +80,11 @@ describe('publish()', () => {
       'package.json': {name: 'pkg', version}
     })
     return publish().then(() => {
-      expect(execa).toHaveBeenCalledTimes(3)
+      expect(execa).toHaveBeenCalledTimes(4)
       expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['view', `pkg@${version}`, 'version'], {stderr: 'inherit'})
       expect(execa).toHaveBeenNthCalledWith(2, 'npm', ['publish', '--tag', 'latest', '--access', 'public'], execOpts)
-      expect(execa).toHaveBeenNthCalledWith(3, 'git', ['push', '--tags', 'origin', 'master'], execOpts)
+      expect(execa).toHaveBeenNthCalledWith(3, 'git', ['tag', `v${version}`], execOpts)
+      expect(execa).toHaveBeenNthCalledWith(4, 'git', ['push', '--tags', 'origin'], execOpts)
     })
   })
 
