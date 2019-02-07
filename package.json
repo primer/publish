@@ -1,6 +1,6 @@
 {
   "name": "@primer/publish",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Publish Primer projects to npm with GitHub Design Systems conventions",
   "keywords": [
     "primer",
