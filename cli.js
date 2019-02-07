@@ -15,7 +15,13 @@ if (options.help) {
   process.exit(0)
 }
 
-publish(options, options._)
+const npmArgs = options._
+delete options._
+
+console.warn(`[publish] options: ${JSON.stringify(options, null, 2)}`)
+console.warn(`[publish] npm args: ${JSON.stringify(npmArgs, null, 2)}`)
+
+publish(options, npmArgs)
   .then(context => {
     console.warn(`published! ${JSON.stringify(context, null, 2)}`)
   })
