@@ -78,6 +78,7 @@ module.exports = function publish(options = {}, npmArgs = []) {
                 owner: repo.owner,
                 repo: repo.name,
                 object: sha,
+                tag,
                 message: `chore: tag ${tag}`
               })
             )
