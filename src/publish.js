@@ -74,13 +74,11 @@ module.exports = function publish(options = {}, npmArgs = []) {
             description: `Tagging the release as "${tag}"...`
           })
             .then(() =>
-              github.git.createTag({
+              github.git.createRef({
                 owner: repo.owner,
                 repo: repo.name,
-                object: sha,
-                tag,
-                type: 'commit', // XXX I have no idea if this is right
-                message: `chore: tag ${tag}`
+                sha,
+                ref: `refs/tags/${tag}`
               })
             )
             .then(() =>
