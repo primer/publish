@@ -29,7 +29,7 @@ module.exports = function getContext(options) {
   const {releaseBranch = 'master', releaseTag = 'latest'} = config
 
   let version
-  let pendingStatus
+  let status
   let tag = releaseTag
 
   const {sha, branch} = meta.git
@@ -42,14 +42,21 @@ module.exports = function getContext(options) {
     const shortSha = sha.substr(0, 7)
     if ((match = branch.match(RELEASE_BRANCH_PATTERN))) {
       const v = match[1]
-      if (v !== version) {
-        pendingStatus = {
-          context: `npm version`,
-          state: 'pending',
-          description: `Remember to set "version": "${v}" in package.json`,
-          url: `https://github.com/${repo}/edit/${branch}/package.json`
-        }
-      }
+      status = Object.assign(
+        {
+          context: `npm version`
+        },
+        v === packageJson.version
+          ? {
+              state: 'success',
+              description: v
+            }
+          : {
+              state: 'pending',
+              description: `Remember to set "version": "${v}" in package.json`,
+              url: `https://github.com/${repo}/edit/${branch}/package.json`
+            }
+      )
       const preid = RELEASE_CANDIDATE_PREID
       version = `${v}-${preid}.${shortSha}`
       tag = RELEASE_CANDIDATE_TAG
@@ -60,5 +67,5 @@ module.exports = function getContext(options) {
     }
   }
 
-  return Promise.resolve({name, version, tag, config, packageJson, pendingStatus})
+  return Promise.resolve({name, version, tag, config, packageJson, status})
 }

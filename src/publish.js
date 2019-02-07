@@ -12,13 +12,13 @@ module.exports = function publish(options = {}, npmArgs = []) {
   const execOpts = {stdio: 'inherit'}
 
   return getContext(options).then(context => {
-    const {name, version, tag, packageJson, pendingStatus} = context
+    const {name, version, tag, packageJson} = context
     const {sha} = meta.git
 
     // this is true if we think we're publishing the version that's in git
     const isLatest = packageJson.version === version
 
-    return (pendingStatus ? publishStatus(context, pendingStatus) : Promise.resolve())
+    return (context.status ? publishStatus(context, context.status) : Promise.resolve())
       .then(() => {
         if (isLatest) {
           console.warn(`[publish] skipping "npm version" because "${version}" matches package.json`)
