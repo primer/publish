@@ -79,6 +79,7 @@ module.exports = function publish(options = {}, npmArgs = []) {
                 repo: repo.name,
                 object: sha,
                 tag,
+                type: 'commit', // XXX I have no idea if this is right
                 message: `chore: tag ${tag}`
               })
             )
