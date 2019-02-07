@@ -8,12 +8,14 @@ const RELEASE_CANDIDATE_PREID = 'rc'
 const RELEASE_CANDIDATE_TAG = 'next'
 
 const CANARY_VERSION = '0.0.0'
-const CANARY_PREID = ''
 const CANARY_TAG = 'canary'
 
 // eslint-disable-next-line no-unused-vars
 module.exports = function getContext(options) {
-  const packageJson = readJSON('package.json') || {}
+  const packageJson = readJSON('package.json')
+  if (!packageJson) {
+    throw new Error(`Unable to read package.json in ${process.cwd()}!`)
+  }
   const {name} = packageJson
 
   // basic sanity checks
@@ -53,8 +55,7 @@ module.exports = function getContext(options) {
       tag = RELEASE_CANDIDATE_TAG
     } else {
       const v = CANARY_VERSION
-      const preid = CANARY_PREID
-      version = preid ? `${v}-${preid}.${shortSha}` : `${v}-${shortSha}`
+      version = `${v}-${shortSha}`
       tag = CANARY_TAG
     }
   }
