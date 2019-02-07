@@ -50,13 +50,15 @@ describe('getContext()', () => {
     })
     mockEnv({
       GITHUB_REF: 'refs/heads/release-1.0.0',
+      GITHUB_REPOSITORY: 'primer/foo',
       GITHUB_SHA: 'deadfad'
     })
     return getContext().then(context => {
       expect(context.pendingStatus).toEqual({
         context: 'npm version',
         state: 'pending',
-        description: `Remember to set "version": "1.0.0" in package.json`
+        description: `Remember to set "version": "1.0.0" in package.json`,
+        url: 'https://github.com/primer/foo/edit/release-1.0.0/package.json'
       })
     })
   })
