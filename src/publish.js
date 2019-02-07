@@ -55,18 +55,35 @@ module.exports = function publish(options = {}, npmArgs = []) {
       )
       .then(() => {
         if (isLatest) {
-          const context = 'git tag'
+          const {GITHUB_TOKEN} = process.env
+          if (!GITHUB_TOKEN) {
+            console.warn(`[publish] GITHUB_TOKEN is not set; skipping tag`)
+            return context
+          }
+
+          const tagContext = 'git tag'
           const tag = `v${version}`
+
+          const Octokit = require('@octokit/rest')
+          const github = new Octokit({auth: `token ${GITHUB_TOKEN}`})
+          const {repo} = meta
+
           return publishStatus(context, {
-            context,
+            context: tagContext,
             state: 'pending',
             description: `Tagging the release as "${tag}"...`
           })
-            .then(() => run('git', ['tag', tag], execOpts))
-            .then(() => run('git', ['push', '--tags', 'origin'], execOpts))
+            .then(() =>
+              github.git.createTag({
+                owner: repo.owner,
+                repo: repo.name,
+                object: sha,
+                message: `chore: tag ${tag}`
+              })
+            )
             .then(() =>
               publishStatus(context, {
-                context,
+                context: tagContext,
                 state: 'success',
                 description: `Tagged ${sha.substr(0, 7)} as "${tag}"`
               })
