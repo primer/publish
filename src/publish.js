@@ -27,9 +27,8 @@ module.exports = function publish(options = {}, npmArgs = []) {
             .then(({stdout}) => stdout === version)
             .then(published => {
               if (published) {
-                console.warn(`[publish] ${version} is already published; exiting with neutral status`)
-                // see: <https://developer.github.com/actions/creating-github-actions/accessing-the-runtime-environment/#exit-codes-and-statuses>
-                process.exit(78)
+                console.warn(`[publish] ${version} is already published`)
+                process.exit(0)
               }
             })
         } else {
