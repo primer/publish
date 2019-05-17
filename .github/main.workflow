@@ -34,7 +34,7 @@ action "publish to npm" {
   ]
 }
 
-action "publish to gpr" {
+action "publish to npm" {
   needs = ["lint", "test"]
   uses = "./"
   secrets = [
