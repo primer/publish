@@ -18,8 +18,6 @@ if [ -n "$NPM_AUTH_TOKEN" ]; then
   chmod 0600 "$NPM_CONFIG_USERCONFIG"
 fi
 
-sh -c "npm $*"
-
 # configure git with sensible defaults
 git config --global user.email "${GIT_USER_EMAIL:-$(jq -r .pusher.email $GITHUB_EVENT_PATH)}"
 git config --global user.name "${GIT_USER_NAME:-$(jq -r .pusher.name $GITHUB_EVENT_PATH)}"
