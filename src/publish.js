@@ -4,8 +4,8 @@ const getContext = require('./context')
 const runDry = require('./run-dry')
 
 module.exports = function publish(options = {}, npmArgs = []) {
-  if (!process.env.NPM_AUTH_TOKEN) {
-    throw new Error(`You must set the NPM_AUTH_TOKEN environment variable`)
+  if (!process.env.NPM_AUTH_TOKEN && !process.env.GPR_AUTH_TOKEN) {
+    throw new Error(`You must set the appropriate NPM or GPR AUTH_TOKEN environment variable`)
   }
 
   const run = options.dryRun ? runDry : require('execa')
