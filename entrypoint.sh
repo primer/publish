@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-AUTH="${NPM_AUTH_TOKEN-$GPR_AUTH_TOKEN}"
+AUTH="${NPM_AUTH_TOKEN:-$GPR_AUTH_TOKEN}"
 
 if [ -z "$AUTH" ]; then
   # Respect NPM_CONFIG_USERCONFIG if it is provided, default to $HOME/.npmrc
@@ -10,7 +10,7 @@ if [ -z "$AUTH" ]; then
   NPM_REGISTRY_SCHEME="http"
 
   # Allow registry.npmjs.org to be overridden with an environment variable
-  printf "//%s/:_authToken=%s\\nregistry=%s" "$NPM_REGISTRY_URL" "$NPM_AUTH_TOKEN" "${NPM_REGISTRY_SCHEME}://$NPM_REGISTRY_URL" > "$NPM_CONFIG_USERCONFIG"
+  printf "//%s/:_authToken=%s\\nregistry=%s" "$NPM_REGISTRY_URL" "$AUTH" "${NPM_REGISTRY_SCHEME}://$NPM_REGISTRY_URL" > "$NPM_CONFIG_USERCONFIG"
   chmod 0600 "$NPM_CONFIG_USERCONFIG"
 fi
 
