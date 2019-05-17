@@ -5,8 +5,8 @@ AUTH="${NPM_AUTH_TOKEN:-$GPR_AUTH_TOKEN}"
 
 if [ -z "$AUTH" ]; then
   # Respect NPM_CONFIG_USERCONFIG if it is provided, default to $HOME/.npmrc
-  NPM_CONFIG_USERCONFIG="${NPM_CONFIG_USERCONFIG-"$HOME/.npmrc"}"
-  NPM_REGISTRY_URL="${NPM_REGISTRY_URL-registry.npmjs.org}"
+  NPM_CONFIG_USERCONFIG="${NPM_CONFIG_USERCONFIG:-"$HOME/.npmrc"}"
+  NPM_REGISTRY_URL="${NPM_REGISTRY_URL:-registry.npmjs.org}"
   NPM_REGISTRY_SCHEME="http"
 
   # Allow registry.npmjs.org to be overridden with an environment variable
