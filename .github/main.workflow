@@ -34,16 +34,6 @@ action "publish to npm" {
   ]
 }
 
-action "publish to npm" {
-  needs = ["lint", "test"]
-  uses = "./"
-  secrets = [
-    "GITHUB_TOKEN",
-    "NPM_AUTH_TOKEN",
-  ]
-}
-
-
 action "publish to gpr" {
   uses = "./"
   needs = ["publish to npm"]
