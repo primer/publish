@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-AUTH="${GPR_AUTH_TOKEN:=$NPM_AUTH_TOKEN}"
+AUTH="${GPR_AUTH_TOKEN-$NPM_AUTH_TOKEN}"
 
 if [ -z "$AUTH" ]; then
   # Respect NPM_CONFIG_USERCONFIG if it is provided, default to $HOME/.npmrc
