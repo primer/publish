@@ -3,7 +3,7 @@ set -e
 
 AUTH="${NPM_AUTH_TOKEN:-$GPR_AUTH_TOKEN}"
 
-if [ -z "$AUTH" ]; then
+if [ -n "$AUTH" ]; then
   # Respect NPM_CONFIG_USERCONFIG if it is provided, default to $HOME/.npmrc
   NPM_CONFIG_USERCONFIG="${NPM_CONFIG_USERCONFIG:-"$HOME/.npmrc"}"
   NPM_REGISTRY_URL="${NPM_REGISTRY_URL:-registry.npmjs.org}"
