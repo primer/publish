@@ -36,7 +36,7 @@ action "publish to npm" {
 
 action "publish to gpr" {
   uses = "./"
-  needs = ["publish to npm"]
+  needs = ["install", "publish to npm"]
   secrets = [
     "GITHUB_TOKEN",
     "GPR_AUTH_TOKEN",
