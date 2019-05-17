@@ -3,7 +3,8 @@ workflow "lint, test, publish" {
   resolves = [
     "lint",
     "test",
-    "publish",
+    "publish to npm",
+    "publish to gpr"
   ]
 }
 
@@ -24,11 +25,34 @@ action "test" {
   args = "test"
 }
 
-action "publish" {
+action "publish to npm" {
   needs = ["lint", "test"]
   uses = "./"
   secrets = [
     "GITHUB_TOKEN",
     "NPM_AUTH_TOKEN",
   ]
+}
+
+action "publish to gpr" {
+  needs = ["lint", "test"]
+  uses = "./"
+  secrets = [
+    "GITHUB_TOKEN",
+    "NPM_AUTH_TOKEN",
+  ]
+}
+
+
+action "publish to gpr" {
+  uses = "./"
+  needs = ["publish to npm"]
+  secrets = [
+    "GITHUB_TOKEN",
+    "GPR_AUTH_TOKEN",
+  ]
+  args = ["--", "--unsafe-perm", "--allow-same-version"]
+  env = {
+    NPM_REGISTRY_URL = "npm.pkg.github.com"
+  }
 }
