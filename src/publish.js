@@ -35,7 +35,10 @@ module.exports = function publish(options = {folder: '.'}, npmArgs = []) {
           return publishStatus(context, {
             state: 'pending',
             description: `npm version ${version}`
-          }).then(() => run('npm', [...npmArgs, 'version', version], execOpts))
+          })
+            .then(() => run('pushd', [options.folder], execOpts))
+            .then(() => run('npm', [...npmArgs, 'version', version], execOpts))
+            .then(() => run('popd', [], execOpts))
         }
       })
       .then(() =>
