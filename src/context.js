@@ -11,7 +11,6 @@ const RELEASE_CANDIDATE_TAG = 'next'
 const CANARY_VERSION = '0.0.0'
 const CANARY_TAG = 'canary'
 
-// eslint-disable-next-line no-unused-vars
 module.exports = function getContext({folder = '.'} = {}) {
   const packageJson = readJSON(path.join(folder, 'package.json'))
   if (!packageJson) {
