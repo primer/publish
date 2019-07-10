@@ -1,3 +1,4 @@
+const path = require('path')
 const meta = require('github-action-meta')
 const actionStatus = require('action-status')
 const getContext = require('./context')
@@ -35,10 +36,13 @@ module.exports = function publish(options = {folder: '.'}, npmArgs = []) {
           return publishStatus(context, {
             state: 'pending',
             description: `npm version ${version}`
-          })
-            .then(() => run('pushd', [options.folder], execOpts))
-            .then(() => run('npm', [...npmArgs, 'version', version], execOpts))
-            .then(() => run('popd', [], execOpts))
+          }).then(() =>
+            run(
+              'npm',
+              [...npmArgs, 'version', version],
+              Object.assign({}, execOpts, {cwd: path.join(process.cwd(), options.folder)})
+            )
+          )
         }
       })
       .then(() =>
