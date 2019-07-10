@@ -46,10 +46,12 @@ describe('publish()', () => {
     })
     const version = '0.0.0-deadfad'
     return publish().then(() => {
-      expect(execa).toHaveBeenCalledTimes(2)
-      expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version], execOpts)
+      expect(execa).toHaveBeenCalledTimes(4)
+      expect(execa).toHaveBeenNthCalledWith(1, 'pushd', ['.'], execOpts)
+      expect(execa).toHaveBeenNthCalledWith(2, 'npm', ['version', version], execOpts)
+      expect(execa).toHaveBeenNthCalledWith(3, 'popd', [], execOpts)
       expect(execa).toHaveBeenNthCalledWith(
-        2,
+        4,
         'npm',
         ['publish', '.', '--tag', 'canary', '--access', 'public'],
         execOpts
@@ -68,9 +70,11 @@ describe('publish()', () => {
     })
     const version = '2.0.0-rc.deadfad'
     return publish().then(() => {
-      expect(execa).toHaveBeenCalledTimes(2)
-      expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version], execOpts)
-      expect(execa).toHaveBeenNthCalledWith(2, 'npm', ['publish', '.', '--tag', 'next', '--access', 'public'], execOpts)
+      expect(execa).toHaveBeenCalledTimes(4)
+      expect(execa).toHaveBeenNthCalledWith(1, 'pushd', ['.'], execOpts)
+      expect(execa).toHaveBeenNthCalledWith(2, 'npm', ['version', version], execOpts)
+      expect(execa).toHaveBeenNthCalledWith(3, 'popd', [], execOpts)
+      expect(execa).toHaveBeenNthCalledWith(4, 'npm', ['publish', '.', '--tag', 'next', '--access', 'public'], execOpts)
     })
   })
 
