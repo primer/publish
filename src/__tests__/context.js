@@ -27,6 +27,10 @@ describe('getContext()', () => {
     expect(() => getContext()).toThrow()
   })
 
+  it('throws if package.json does not exist in given folder', () => {
+    expect(() => getContext({folder: 'foo/bar'})).toThrow()
+  })
+
   it('throws if "private": true in package.json', () => {
     mockFiles({'package.json': {private: true}})
     expect(() => getContext()).toThrow()
@@ -105,6 +109,18 @@ describe('getContext()', () => {
     mockEnv({GITHUB_REF: 'refs/heads/master'})
     return getContext().then(context => {
       expect(context.version).toBe(version)
+      expect(context.tag).toBe('latest')
+    })
+  })
+
+  it('respects "folder" option', () => {
+    mockFiles({
+      'foo/bar/package.json': {name: 'example', version: '1.0.0'}
+    })
+    mockEnv({GITHUB_REF: 'refs/heads/master'})
+    return getContext({folder: 'foo/bar'}).then(context => {
+      expect(context.name).toBe('example')
+      expect(context.version).toBe('1.0.0')
       expect(context.tag).toBe('latest')
     })
   })

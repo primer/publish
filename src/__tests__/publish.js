@@ -48,7 +48,12 @@ describe('publish()', () => {
     return publish().then(() => {
       expect(execa).toHaveBeenCalledTimes(2)
       expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version], execOpts)
-      expect(execa).toHaveBeenNthCalledWith(2, 'npm', ['publish', '--tag', 'canary', '--access', 'public'], execOpts)
+      expect(execa).toHaveBeenNthCalledWith(
+        2,
+        'npm',
+        ['publish', '.', '--tag', 'canary', '--access', 'public'],
+        execOpts
+      )
     })
   })
 
@@ -65,7 +70,7 @@ describe('publish()', () => {
     return publish().then(() => {
       expect(execa).toHaveBeenCalledTimes(2)
       expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['version', version], execOpts)
-      expect(execa).toHaveBeenNthCalledWith(2, 'npm', ['publish', '--tag', 'next', '--access', 'public'], execOpts)
+      expect(execa).toHaveBeenNthCalledWith(2, 'npm', ['publish', '.', '--tag', 'next', '--access', 'public'], execOpts)
     })
   })
 
@@ -82,7 +87,12 @@ describe('publish()', () => {
     return publish().then(() => {
       expect(execa).toHaveBeenCalledTimes(2)
       expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['view', `pkg@${version}`, 'version'], {stderr: 'inherit'})
-      expect(execa).toHaveBeenNthCalledWith(2, 'npm', ['publish', '--tag', 'latest', '--access', 'public'], execOpts)
+      expect(execa).toHaveBeenNthCalledWith(
+        2,
+        'npm',
+        ['publish', '.', '--tag', 'latest', '--access', 'public'],
+        execOpts
+      )
       // expect(execa).toHaveBeenNthCalledWith(3, 'git', ['tag', `v${version}`], execOpts)
       // expect(execa).toHaveBeenNthCalledWith(4, 'git', ['push', '--tags', 'origin'], execOpts)
     })
@@ -99,6 +109,28 @@ describe('publish()', () => {
     })
     return publish({dryRun: true}).then(() => {
       expect(execa).toHaveBeenCalledTimes(0)
+    })
+  })
+
+  it('respects "folder" option', () => {
+    const version = '1.1.0'
+    mockEnv({
+      GITHUB_REF: 'refs/heads/master',
+      GITHUB_SHA: 'deadfad',
+      NPM_AUTH_TOKEN: 'secret'
+    })
+    mockFiles({
+      'foo/bar/package.json': {name: 'pkg', version}
+    })
+    return publish({folder: 'foo/bar'}).then(() => {
+      expect(execa).toHaveBeenCalledTimes(2)
+      expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['view', `pkg@${version}`, 'version'], {stderr: 'inherit'})
+      expect(execa).toHaveBeenNthCalledWith(
+        2,
+        'npm',
+        ['publish', 'foo/bar', '--tag', 'latest', '--access', 'public'],
+        execOpts
+      )
     })
   })
 

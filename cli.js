@@ -6,6 +6,11 @@ const yargs = require('yargs')
     describe: 'Print what will be done without doing it',
     type: 'boolean'
   })
+  .option('folder', {
+    describe: 'A folder containing a package.json file',
+    type: 'string',
+    default: '.'
+  })
   .alias('help', 'h')
 
 const options = yargs.argv

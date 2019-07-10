@@ -1,3 +1,4 @@
+const path = require('path')
 const meta = require('github-action-meta')
 const readJSON = require('./read-json')
 
@@ -11,10 +12,10 @@ const CANARY_VERSION = '0.0.0'
 const CANARY_TAG = 'canary'
 
 // eslint-disable-next-line no-unused-vars
-module.exports = function getContext(options) {
-  const packageJson = readJSON('package.json')
+module.exports = function getContext({folder = '.'} = {}) {
+  const packageJson = readJSON(path.join(folder, 'package.json'))
   if (!packageJson) {
-    throw new Error(`Unable to read package.json in ${process.cwd()}!`)
+    throw new Error(`Unable to read package.json in ${path.join(process.cwd(), folder)}!`)
   }
   const {name} = packageJson
 
