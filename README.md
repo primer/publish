@@ -36,6 +36,41 @@ action "publish" {
 
 We suggest that you place this action after any linting and/or testing actions to catch as many errors as possible before publishing.
 
+## Options
+
+### `--dry-run`
+
+Default: `false`
+
+Does everything publish would do except actually publishing to the registry. Reports the details of what would have been published.
+
+#### Example
+
+```hcl
+action "publish" {
+  uses = "primer/publish@master"
+  secrets = ["GITHUB_TOKEN", "NPM_AUTH_TOKEN"]
+  args = "--dry-run"
+}
+```
+
+
+### `--folder=<path>`
+
+Default: `.`
+
+Accepts a path to the folder that contains the `package.json` to publish.
+
+#### Example
+
+```hcl
+action "publish" {
+  uses = "primer/publish@master"
+  secrets = ["GITHUB_TOKEN", "NPM_AUTH_TOKEN"]
+  args = "--folder=packages/example"
+}
+```
+
 ## npm CLI arguments
 It's possible to pass additional arguments to `npm` via the `args` field in your workflow action. Because the `primer-publish` CLI accepts options of its own (such as `--dry-run`), you need to prefix any `npm` arguments with `--`:
 
