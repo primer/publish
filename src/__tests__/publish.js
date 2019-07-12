@@ -118,12 +118,12 @@ describe('publish()', () => {
     mockFiles({
       'package.json': {name: 'pkg', version: '1.0.0'}
     })
-    return publish({dryRun: true, folder: '.'}).then(() => {
+    return publish({dryRun: true, dir: '.'}).then(() => {
       expect(execa).toHaveBeenCalledTimes(0)
     })
   })
 
-  it('respects "folder" option on master', () => {
+  it('respects "dir" option on master', () => {
     const version = '1.1.0'
     mockEnv({
       GITHUB_REF: 'refs/heads/master',
@@ -133,7 +133,7 @@ describe('publish()', () => {
     mockFiles({
       'foo/bar/package.json': {name: 'pkg', version}
     })
-    return publish({folder: 'foo/bar'}).then(() => {
+    return publish({dir: 'foo/bar'}).then(() => {
       expect(execa).toHaveBeenCalledTimes(2)
       expect(execa).toHaveBeenNthCalledWith(1, 'npm', ['view', `pkg@${version}`, 'version'], {stderr: 'inherit'})
       expect(execa).toHaveBeenNthCalledWith(
@@ -145,7 +145,7 @@ describe('publish()', () => {
     })
   })
 
-  it('respects "folder" option on a release branch', () => {
+  it('respects "dir" option on a release branch', () => {
     mockEnv({
       GITHUB_REF: 'refs/heads/release-2.0.0',
       GITHUB_SHA: 'deadfad',
@@ -155,7 +155,7 @@ describe('publish()', () => {
       'foo/bar/package.json': {name: 'pkg', version: '1.0.0'}
     })
     const version = '2.0.0-rc.deadfad'
-    return publish({folder: 'foo/bar'}).then(() => {
+    return publish({dir: 'foo/bar'}).then(() => {
       expect(execa).toHaveBeenCalledTimes(2)
       expect(execa).toHaveBeenNthCalledWith(
         1,

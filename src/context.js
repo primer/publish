@@ -11,10 +11,10 @@ const RELEASE_CANDIDATE_TAG = 'next'
 const CANARY_VERSION = '0.0.0'
 const CANARY_TAG = 'canary'
 
-module.exports = function getContext({folder = '.'} = {}) {
-  const packageJson = readJSON(path.join(folder, 'package.json'))
+module.exports = function getContext({dir = '.'} = {}) {
+  const packageJson = readJSON(path.join(dir, 'package.json'))
   if (!packageJson) {
-    throw new Error(`Unable to read package.json in ${path.join(process.cwd(), folder)}!`)
+    throw new Error(`Unable to read package.json in ${path.join(process.cwd(), dir)}!`)
   }
   const {name} = packageJson
 
