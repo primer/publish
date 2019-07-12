@@ -6,6 +6,11 @@ const yargs = require('yargs')
     describe: 'Print what will be done without doing it',
     type: 'boolean'
   })
+  .option('dir', {
+    describe: 'Path to the directory that contains the package.json to publish',
+    type: 'string',
+    default: '.'
+  })
   .alias('help', 'h')
 
 const options = yargs.argv

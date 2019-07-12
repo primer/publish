@@ -1,9 +1,10 @@
+const path = require('path')
 const meta = require('github-action-meta')
 const actionStatus = require('action-status')
 const getContext = require('./context')
 const runDry = require('./run-dry')
 
-module.exports = function publish(options = {}, npmArgs = []) {
+module.exports = function publish(options = {dir: '.'}, npmArgs = []) {
   if (!process.env.NPM_AUTH_TOKEN) {
     throw new Error(`You must set the NPM_AUTH_TOKEN environment variable`)
   }
@@ -35,7 +36,13 @@ module.exports = function publish(options = {}, npmArgs = []) {
           return publishStatus(context, {
             state: 'pending',
             description: `npm version ${version}`
-          }).then(() => run('npm', [...npmArgs, 'version', version], execOpts))
+          }).then(() =>
+            run(
+              'npm',
+              [...npmArgs, 'version', version],
+              Object.assign({}, execOpts, {cwd: path.join(process.cwd(), options.dir)})
+            )
+          )
         }
       })
       .then(() =>
@@ -44,7 +51,7 @@ module.exports = function publish(options = {}, npmArgs = []) {
           description: `npm publish --tag ${tag}`
         })
       )
-      .then(() => run('npm', [...npmArgs, 'publish', '--tag', tag, '--access', 'public'], execOpts))
+      .then(() => run('npm', [...npmArgs, 'publish', options.dir, '--tag', tag, '--access', 'public'], execOpts))
       .then(() =>
         publishStatus(context, {
           state: 'success',
