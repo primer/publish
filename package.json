@@ -19,6 +19,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@actions/core": "^1.0.0",
+    "@actions/github": "^1.0.1",
     "@octokit/rest": "^16.15.0",
     "action-status": "^0.1.1",
     "github-action-meta": "^0.1.2",

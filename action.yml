@@ -1,0 +1,10 @@
+name: Primer Publish
+description: Action to publish with npm with Primer version conventinos
+author: GitHub
+inputs:
+  npm-auth-token:
+    description: 'your npm access token'
+    required: true
+runs:
+  using: node12
+  main: action.js
