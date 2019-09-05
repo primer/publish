@@ -21,7 +21,33 @@ If you're on a release branch (`release-<version>`) and the `<version>` portion 
 
 ## Usage
 
-To use this action in your own workflow, add the following snippet to your `.github/main.workflow` file:
+**You will need to provide an npm access token with publish permissions via the `NPM_AUTH_TOKEN` secret in the Actions visual editor** if you haven't already. The `GITHUB_TOKEN` secret is also required to create tags after releasing on the master branch.
+
+We suggest that you place this action after any linting and/or testing actions to catch as many errors as possible before publishing.
+
+
+### Actions v2
+To use this in an [Actions v2](https://help.github.com/en/articles/migrating-github-actions-from-hcl-syntax-to-yaml-syntax) workflow, add the following YAML to one or more of your steps:
+
+```yaml
+- uses: primer/publish@master
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+```
+
+You can pass additional [options](#options) via the `args` key:
+
+```diff
+​- uses: primer/publish@master
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
++   args: '--dry-run -- --unsafe-perm'
+```
+
+### Actions v1
+To use this in an Actions v1 workflow, add the following snippet to `.github/main.workflow`:
 
 ```hcl
 action "publish" {
@@ -32,10 +58,6 @@ action "publish" {
   ]
 }
 ```
-
-**You will need to provide an npm access token with publish permissions via the `NPM_AUTH_TOKEN` secret in the Actions visual editor** if you haven't already. The `GITHUB_TOKEN` secret is also required to create tags after releasing on the master branch.
-
-We suggest that you place this action after any linting and/or testing actions to catch as many errors as possible before publishing.
 
 ## Options
 
