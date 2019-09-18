@@ -4,7 +4,7 @@ This [GitHub Action][github actions] publishes to npm with the following convent
 
 1. If we're on the `master` branch, the `version` field is used as-is and we just run `npm publish --access public`.
    - After publishing a new version on the `master` branch, we tag the commit SHA with `v{version}` via the GitHub API.
-   - If the version in `package.json` is already published, we exit with a `78` code, which is Actions-speak for "neutral".
+   - If the version in `package.json` is already published, we exit with a `0` code. Previously, we exited with a `78` code, which was Actions v1-speak for "neutral", but this has been removed from Actions v2: https://twitter.com/ethomson/status/1163899559279497217?s=20.
 1. If we're on a `release-<version>` branch, we publish a release candidate to the `next` npm dist-tag with the version in the form: `<version>-rc.<sha>`.
    - A [status check][status checks] is created with the context `npm version` noting whether the `version` field in `package.json` matches the `<version>` portion of the branch. If it doesn't, the check's status is marked as pending.
 1. Otherwise, we publish a "canary" release, which has a version in the form: `0.0.0-<sha>`.
