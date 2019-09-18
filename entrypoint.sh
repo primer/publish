@@ -1,6 +1,14 @@
 #!/bin/bash
 set -e
 
+# Actions v1 reported a neutral status when a process exited with a 78 code.
+# Actions v2 removed support for this, so exit with a 0 code instead
+neutral_exit() {
+    EXIT_CODE=$?
+    [[ $EXIT_CODE == "78" ]] && exit 0 || exit $EXIT_CODE
+}
+trap neutral_exit EXIT
+
 # copied directly from:
 # https://github.com/actions/npm/blob/98e6dc1/entrypoint.sh#L5-L13
 if [ -n "$NPM_AUTH_TOKEN" ]; then
