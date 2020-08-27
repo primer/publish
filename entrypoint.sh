@@ -18,6 +18,7 @@ if [ -n "$NPM_AUTH_TOKEN" ]; then
 
   # Allow registry.npmjs.org to be overridden with an environment variable
   printf "//%s/:_authToken=%s\\nregistry=%s" "$NPM_REGISTRY_URL" "$NPM_AUTH_TOKEN" "$NPM_REGISTRY_URL" > "$NPM_CONFIG_USERCONFIG"
+  cat "$NPM_CONFIG_USERCONFIG"
   chmod 0600 "$NPM_CONFIG_USERCONFIG"
 fi
 
