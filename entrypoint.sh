@@ -27,4 +27,4 @@ git config --global user.name "${GIT_USER_NAME:-$(jq -r .pusher.name $GITHUB_EVE
 # then print out our config
 git config --list
 
-sh -c "/primer-publish/cli.js $*"
+sh -c "/primer-publish/cli.js -- $*"
