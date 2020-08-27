@@ -2,8 +2,6 @@ const path = require('path')
 const meta = require('github-action-meta')
 const readJSON = require('./read-json')
 
-const CONFIG_KEY = '@primer/publish'
-
 const RELEASE_BRANCH_PATTERN = /^release-(.+)$/
 const RELEASE_CANDIDATE_PREID = 'rc'
 const RELEASE_CANDIDATE_TAG = 'next'
@@ -11,7 +9,7 @@ const RELEASE_CANDIDATE_TAG = 'next'
 const CANARY_VERSION = '0.0.0'
 const CANARY_TAG = 'canary'
 
-module.exports = function getContext({dir = '.'} = {}) {
+module.exports = function getContext({dir, releaseBranch, releaseTag} = {}) {
   const packageJson = readJSON(path.join(dir, 'package.json'))
   if (!packageJson) {
     throw new Error(`Unable to read package.json in ${path.join(process.cwd(), dir)}!`)
@@ -24,10 +22,6 @@ module.exports = function getContext({dir = '.'} = {}) {
   } else if (!name) {
     throw new Error(`package.json is missing a "name" field`)
   }
-
-  const config = packageJson[CONFIG_KEY] || {}
-  const {releaseTag = 'latest'} = config
-  const releaseBranch = process.env.INPUTS_RELEASE_BRANCH || "master"
 
   let version
   let status

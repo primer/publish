@@ -4,12 +4,23 @@ const publish = require('./src/publish')
 const yargs = require('yargs')
   .option('dry-run', {
     describe: 'Print what will be done without doing it',
+    default: process.env.INPUT_DRY_RUN || false,
     type: 'boolean'
   })
   .option('dir', {
     describe: 'Path to the directory that contains the package.json to publish',
     type: 'string',
-    default: '.'
+    default: process.env.INPUT_DIR || '.'
+  })
+  .option('release-branch', {
+    describe: 'Default branch to use for merge releases',
+    type: 'string',
+    default: process.env.INPUT_RELEASE_BRANCH || 'master'
+  })
+  .option('release-tag', {
+    describe: 'Override tag to release package with',
+    type: 'string',
+    default: process.env.INPUT_RELEASE_TAG || 'latest'
   })
   .alias('help', 'h')
 
