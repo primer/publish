@@ -62,5 +62,5 @@ module.exports = function getContext({dir, releaseBranch, releaseTag} = {}) {
     }
   }
 
-  return Promise.resolve({name, version, tag, config, packageJson, status})
+  return Promise.resolve({name, version, tag, packageJson, status})
 }
