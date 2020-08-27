@@ -39,7 +39,7 @@ module.exports = function publish(options = {dir: '.'}, npmArgs = []) {
           }).then(() =>
             run(
               'npm',
-              [...npmArgs, 'version', version],
+              [npmArgs, 'version', version],
               Object.assign({}, execOpts, {cwd: path.join(process.cwd(), options.dir)})
             )
           )
@@ -51,7 +51,7 @@ module.exports = function publish(options = {dir: '.'}, npmArgs = []) {
           description: `npm publish --tag ${tag}`
         })
       )
-      .then(() => run('npm', [...npmArgs, 'publish', options.dir, '--tag', tag, '--access', 'public'], execOpts))
+      .then(() => run('npm', [npmArgs, 'publish', options.dir, '--tag', tag, '--access', 'public'], execOpts))
       .then(() =>
         publishStatus(context, {
           state: 'success',

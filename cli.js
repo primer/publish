@@ -1,34 +1,12 @@
 #!/usr/bin/env node
 const publish = require('./src/publish')
 
-const yargs = require('yargs')
-  .option('dry-run', {
-    describe: 'Print what will be done without doing it',
-    type: 'boolean'
-  })
-  .option('dir', {
-    describe: 'Path to the directory that contains the package.json to publish',
-    type: 'string',
-    default: '.'
-  })
-  .alias('help', 'h')
-
-const options = yargs.argv
+const npmArgs = process.env.INPUT_NPM_ARGS
+const options = JSON.parse(process.env.INPUT_OPTIONS)
 
 
-
-if (options.help) {
-  yargs.showHelp()
-  process.exit(0)
-}
-
-const npmArgs = options._
-
-console.log('options 🌈', options)
-delete options._
-
-console.warn(`[publish] options: ${JSON.stringify(options, null, 2)}`)
-console.warn(`[publish] npm args: ${JSON.stringify(npmArgs, null, 2)}`)
+console.log(`[publish] options🌈: ${options}`)
+console.log(`[publish] npm args🌈: ${npmArgs}`)
 
 publish(options, npmArgs)
   .then(context => {
