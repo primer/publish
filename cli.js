@@ -15,12 +15,16 @@ const yargs = require('yargs')
 
 const options = yargs.argv
 
+
+
 if (options.help) {
   yargs.showHelp()
   process.exit(0)
 }
 
 const npmArgs = options._
+
+console.log('NPM ARGS😂😂😂', npmArgs)
 delete options._
 
 console.warn(`[publish] options: ${JSON.stringify(options, null, 2)}`)
