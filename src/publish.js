@@ -4,7 +4,7 @@ const actionStatus = require('action-status')
 const getContext = require('./context')
 const runDry = require('./run-dry')
 
-module.exports = function publish(options = {dir: '.'}, npmArgs = []) {
+module.exports = function publish(options = {dir: '.'}, releaseBranch, npmArgs = []) {
   if (!process.env.NPM_AUTH_TOKEN) {
     throw new Error(`You must set the NPM_AUTH_TOKEN environment variable`)
   }
@@ -12,7 +12,7 @@ module.exports = function publish(options = {dir: '.'}, npmArgs = []) {
   const run = options.dryRun ? runDry : require('execa')
   const execOpts = {stdio: 'inherit'}
 
-  return getContext(options).then(context => {
+  return getContext(options, releaseBranch).then(context => {
     const {name, version, tag, packageJson} = context
     const {sha} = meta.git
 
