@@ -24,7 +24,7 @@ if (options.help) {
 
 const npmArgs = options._
 
-console.log('NPM ARGS😂😂😂', npmArgs)
+console.log('options 🌈', options)
 delete options._
 
 console.warn(`[publish] options: ${JSON.stringify(options, null, 2)}`)
