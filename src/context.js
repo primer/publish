@@ -27,7 +27,7 @@ module.exports = function getContext({dir = '.'} = {}) {
 
   const config = packageJson[CONFIG_KEY] || {}
   const {releaseTag = 'latest'} = config
-  const releaseBranch = process.env.RELEASE_BRANCH || "master"
+  const releaseBranch = process.env.INPUTS_RELEASE_BRANCH || "master"
   let version
   let status
   let tag = releaseTag
