@@ -52,6 +52,7 @@ module.exports = function publish(options = {dir: '.'}, npmArgs = []) {
         })
       )
       .then(() => run('npm', [...npmArgs, 'publish', options.dir, '--tag', tag, '--access', 'public'], execOpts))
+      .then(() => run("node", ["--version"])
       .then(() =>
         publishStatus(context, {
           state: 'success',
