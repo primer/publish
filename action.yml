@@ -4,9 +4,6 @@ inputs:
   npm-args:
     description: "additional npm cli arguments"
     required: false
-  options:
-      description: "additional options for the publish action"
-      required: false
   release-branch:
     description: 'Branch that releases should be cut from (usually your default branch)'
     required: false
@@ -16,4 +13,4 @@ runs:
   image: 'Dockerfile'
   args:
     - ${{ inputs.release-branch }}
-    - ${{ inputs.args }}
+    - ${{ inputs.npm-args }}
