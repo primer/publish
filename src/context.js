@@ -35,17 +35,22 @@ module.exports = function getContext({dir = '.'} = {}) {
   const {sha, branch} = meta.git
   const repo = meta.repo.toString()
 
+  // if the action is called on the primary branch, then the
+  // current version in package.json is the version you should publish
   if (branch === releaseBranch) {
     version = packageJson.version
   } else {
     let match
     const shortSha = sha.substr(0, 7)
+    // find the version from the release branch name?
     if ((match = branch.match(RELEASE_BRANCH_PATTERN))) {
       const v = match[1]
       status = Object.assign(
         {
           context: `npm version`
         },
+        // if the release branch name matches the name in package.json send success message
+        // otherwise send and error
         v === packageJson.version
           ? {
               state: 'success',
@@ -61,6 +66,8 @@ module.exports = function getContext({dir = '.'} = {}) {
       version = `${v}-${preid}.${shortSha}`
       tag = RELEASE_CANDIDATE_TAG
     } else {
+      // if it's not a release branch or a merge to the primary branch,
+      // cut a canary version
       const v = CANARY_VERSION
       version = `${v}-${shortSha}`
       tag = CANARY_TAG
