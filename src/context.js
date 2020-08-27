@@ -29,7 +29,7 @@ module.exports = function getContext({dir, releaseBranch, releaseTag} = {}) {
 
   const {sha, branch} = meta.git
   const repo = meta.repo.toString()
-
+  console.log('🌈 release branch:', releaseBranch, `branch:`, branch)
   if (branch === releaseBranch) {
     version = packageJson.version
   } else {
