@@ -25,6 +25,7 @@ const yargs = require('yargs')
   .alias('help', 'h')
 
 const options = yargs.argv
+console.log('yargs release branch:🐬🐬', options.releaseBranch, process.env.INPUT_RELEASE_BRANCH, process.env)
 
 if (options.help) {
   yargs.showHelp()
