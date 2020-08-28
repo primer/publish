@@ -13,7 +13,6 @@ inputs:
   release-branch:
     description: 'Branch that releases should be cut from (usually your default branch)'
     required: false
-    default: 'master'
   release-tag:
     description: 'Override tag to release package with'
     required: false
