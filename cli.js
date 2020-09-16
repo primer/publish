@@ -12,10 +12,10 @@ const yargs = require('yargs')
     type: 'string',
     default: process.env.INPUT_DIR || '.'
   })
-  .option('release-branch', {
+  .option('default-branch', {
     describe: 'Default branch to use for merge releases',
     type: 'string',
-    default: process.env.INPUT_RELEASE_BRANCH || 'master'
+    default: process.env.INPUT_DEFAULT_BRANCH || 'master'
   })
   .option('release-tag', {
     describe: 'Override tag to release package with',

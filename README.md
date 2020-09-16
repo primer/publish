@@ -43,7 +43,7 @@ You can pass additional [inputs](#inputs) via the `with` key:
   uses: "primer/publish@v3"
   with:
     npm-args: "--unsafe-perm --allow-same-version"
-    release-branch: "main"
+    default-branch: "main"
 ```
 
 
@@ -91,7 +91,7 @@ It's possible to pass additional arguments to `npm` via the `npm_args` input in 
     npm_args: "--unsafe-perm --allow-same-version"
 ```
 
-### `release_branch`
+### `default_branch`
 
 The branch you'd like to use to trigger releases. Typically this is `main` or `master`.
 
@@ -101,7 +101,7 @@ Default: `master`
 - name: Publish to the npm registry
   uses: "primer/publish@v3"
   with:
-    release_branch: "main"
+    default_branch: "main"
 ```
 
 ### `release_tag`

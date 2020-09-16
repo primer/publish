@@ -1,7 +1,7 @@
 name: '@primer/publish'
 description: 'Publish Primer projects to npm with GitHub Design Systems conventions'
 inputs:
-  release_branch:
+  default_branch:
     description: 'Branch that releases should be cut from (usually your default branch)'
     required: false
   dir:
