@@ -1,0 +1,22 @@
+name: Publish
+on: [push]
+
+jobs:
+
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Publish to the npm registry
+        uses: "./"
+        with:
+          npm_args: "--unsafe-perm --allow-same-version"
+          default_branch: "main"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
