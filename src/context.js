@@ -2,7 +2,7 @@ const path = require('path')
 const meta = require('github-action-meta')
 const readJSON = require('./read-json')
 
-const DEFAULT_BRANCH_PATTERN = /^release-(.+)$/
+const RELEASE_BRANCH_PATTERN = /^release-(.+)$/
 const RELEASE_CANDIDATE_PREID = 'rc'
 const RELEASE_CANDIDATE_TAG = 'next'
 
@@ -35,7 +35,7 @@ module.exports = function getContext({dir, defaultBranch, releaseTag} = {}) {
   } else {
     let match
     const shortSha = sha.substr(0, 7)
-    if ((match = branch.match(DEFAULT_BRANCH_PATTERN))) {
+    if ((match = branch.match(RELEASE_BRANCH_PATTERN))) {
       const v = match[1]
       status = Object.assign(
         {
