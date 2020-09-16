@@ -88,7 +88,7 @@ It's possible to pass additional arguments to `npm` via the `npm_args` input in 
 - name: Publish to the npm registry
   uses: "primer/publish"
   with:
-    npm_args: "-unsafe-perm --allow-same-version"
+    npm_args: "--unsafe-perm --allow-same-version"
 ```
 
 ### `release_branch`
