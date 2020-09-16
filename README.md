@@ -30,7 +30,7 @@ We suggest that you place this action after any linting and/or testing actions t
 To use this in an Actions workflow, add the following YAML to one or more of your steps:
 
 ```yaml
-- uses: primer/publish@master
+- uses: primer/publish@v3
   env:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
@@ -40,7 +40,7 @@ You can pass additional [inputs](#inputs) via the `with` key:
 
 ```hcl
 - name: Publish to the npm registry
-  uses: "primer/publish@dbf72c725e7eb6309aee73215e4fbcbe2b9c48f8"
+  uses: "primer/publish@v3"
   with:
     npm-args: "--unsafe-perm --allow-same-version"
     release-branch: "main"
@@ -59,7 +59,7 @@ Default: `false`
 
 ```hcl
 - name: Publish to the npm registry
-  uses: "primer/publish"
+  uses: "primer/publish@v3"
   with:
     dry_run: true
 ```
@@ -74,7 +74,7 @@ Default: `.`
 
 ```hcl
 - name: Publish to the npm registry
-  uses: "primer/publish"
+  uses: "primer/publish@v3"
   with:
     dir: "packages/example"
 }
@@ -86,7 +86,7 @@ It's possible to pass additional arguments to `npm` via the `npm_args` input in 
 
 ```hcl
 - name: Publish to the npm registry
-  uses: "primer/publish"
+  uses: "primer/publish@v3"
   with:
     npm_args: "--unsafe-perm --allow-same-version"
 ```
@@ -99,7 +99,7 @@ Default: `master`
 
 ```hcl
 - name: Publish to the npm registry
-  uses: "primer/publish"
+  uses: "primer/publish@v3"
   with:
     release_branch: "main"
 ```
@@ -112,7 +112,7 @@ Default: `latest`
 
 ```hcl
 - name: Publish to the npm registry
-  uses: "primer/publish"
+  uses: "primer/publish@v3"
   with:
     release_tag: "1.0.0"
 ```
