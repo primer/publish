@@ -9,7 +9,7 @@ const RELEASE_CANDIDATE_TAG = 'next'
 const CANARY_VERSION = '0.0.0'
 const CANARY_TAG = 'canary'
 
-module.exports = function getContext({dir, releaseBranch, releaseTag} = {}) {
+module.exports = function getContext({dir, defaultBranch, releaseTag} = {}) {
   const packageJson = readJSON(path.join(dir, 'package.json'))
   if (!packageJson) {
     throw new Error(`Unable to read package.json in ${path.join(process.cwd(), dir)}!`)
@@ -30,7 +30,7 @@ module.exports = function getContext({dir, releaseBranch, releaseTag} = {}) {
   const {sha, branch} = meta.git
   const repo = meta.repo.toString()
 
-  if (branch === releaseBranch) {
+  if (branch === defaultBranch) {
     version = packageJson.version
   } else {
     let match
