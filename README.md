@@ -40,7 +40,7 @@ You can pass additional [inputs](#inputs) via the `with` key:
 
 ```hcl
 - name: Publish to the npm registry
-  uses: "primer/publish@v3"
+  uses: "primer/publish@3.0.0"
   with:
     npm-args: "--unsafe-perm --allow-same-version"
     default-branch: "main"
@@ -59,7 +59,7 @@ Default: `false`
 
 ```hcl
 - name: Publish to the npm registry
-  uses: "primer/publish@v3"
+  uses: "primer/publish@3.0.0"
   with:
     dry_run: true
 ```
@@ -74,7 +74,7 @@ Default: `.`
 
 ```hcl
 - name: Publish to the npm registry
-  uses: "primer/publish@v3"
+  uses: "primer/publish@3.0.0"
   with:
     dir: "packages/example"
 }
@@ -86,7 +86,7 @@ It's possible to pass additional arguments to `npm` via the `npm_args` input in 
 
 ```hcl
 - name: Publish to the npm registry
-  uses: "primer/publish@v3"
+  uses: "primer/publish@3.0.0"
   with:
     npm_args: "--unsafe-perm --allow-same-version"
 ```
@@ -99,7 +99,7 @@ Default: `master`
 
 ```hcl
 - name: Publish to the npm registry
-  uses: "primer/publish@v3"
+  uses: "primer/publish@3.0.0"
   with:
     default_branch: "main"
 ```
@@ -112,7 +112,7 @@ Default: `latest`
 
 ```hcl
 - name: Publish to the npm registry
-  uses: "primer/publish@v3"
+  uses: "primer/publish@3.0.0"
   with:
     release_tag: "1.0.0"
 ```
