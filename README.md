@@ -30,7 +30,7 @@ We suggest that you place this action after any linting and/or testing actions t
 To use this in an Actions workflow, add the following YAML to one or more of your steps:
 
 ```yaml
-- uses: primer/publish@v3
+- uses: primer/publish@3
   env:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
